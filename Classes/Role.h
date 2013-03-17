@@ -14,7 +14,10 @@ public:
 	static const int ATTACK = 5;
 	static const int HOLD = 6;
 	static const int FALL = 7;
+	static const int OVER = 8;
 
+	static const int POSX = 200;
+	static const int POSY = 130;
 	Role(CCLayer*);
 	~Role(void);
 	void changeState(int);
@@ -24,15 +27,20 @@ public:
 	void hold();
 	void actionCallback();
 	void fall();
+	void fly(bool);
 	void resetWeapon();
 	CCRect getWeaponRange();
 	void weaponDone(int,float);  //ÎäÆ÷»÷ÖÐ
-	void setProtect();
+	void setProtect(bool);
+	bool isProtected(){return protecting;}
+	void nextLevel();
+	bool isDie(){return die;}
 private:
 	bool protecting;   //ÎÞµÐ×´Ì¬
 	int state;
 	bool checkOnLand;
 	CCSprite* hero;
 	Weapon* weapon;
+	bool die;  
 };
 #endif

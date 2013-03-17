@@ -18,8 +18,8 @@ void Weapon::actionCallback(){
 void Weapon::shoot(){
 	setPosition(owner->getPosition());
 	setVisible(true);
-	float time = POINT_INSTANCE(ccp(300,480),getPosition()) / 1200.0f;
-	runAction(CCSequence::create(CCMoveTo::create(time,ccp(300,480 + getContentSize().height/2)),
+	float time = POINT_INSTANCE(ccp(400,480),getPosition()) / 1200.0f;
+	runAction(CCSequence::create(CCMoveTo::create(time,ccp(400,480 + getContentSize().height/2)),
 		CCCallFunc::create(this,callfunc_selector(Weapon::actionCallback)),
 		NULL));
 }

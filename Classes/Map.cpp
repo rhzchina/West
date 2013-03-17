@@ -1,18 +1,34 @@
 #include "Map.h"
 
 
-Map::Map(int level)
+Map::Map(int level,CCLayer* parent)
 {
-	map = NULL;
+	/*map = NULL;
 	mapUp = false;                                                          
 	mapData = vector<int>();
 	createData(level);
-	speed = 5;
 	initMap(1);
+	curLevel = 1;*/
+	speed = 5;
+	resetMap(level,parent);
 }
 
 Map::~Map(void)
 {
+}
+
+void Map::resetMap(int level,CCLayer* parent){
+	curLevel = level;
+	map = NULL;
+	mapUp = false;
+	if(&mapData == NULL){
+		mapData = vector<int>();
+	}else{
+		mapData.clear();
+	}
+	createData(level);
+	initMap(1);
+	addMap(parent);
 }
 
 void Map::createData(int level){
@@ -24,37 +40,37 @@ void Map::createData(int level){
 		}
 	}else if(level == 2){
 		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 5, 0, 5, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3,
-			0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 };
+			0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0,7,8,9 };
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 3){
 		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0,
-			1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0 };
+			1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0,7,8,9 };
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 4){
 		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 0, 6, 0, 0, 0, 1, 3, 0, 0, 6, 0, 0,
-			0, 1, 3, 0, 5, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0, 1, 2, 6, 2, 3, 0, 5, 0, 4, 0 };
+			0, 1, 3, 0, 5, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0, 1, 2, 6, 2, 3, 0, 5, 0, 4, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 5){
 		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 5, 0, 5,
-			0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 };
+			0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 6){
 		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0, 1, 3,
-			0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0 };
+			0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 7){
 		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 5, 0, 5,
-			0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 };
+			0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
@@ -83,7 +99,7 @@ void Map::initMap(int level){
 	float y = 0;
 	switch(level){
 	case 1:
-		map = CCArray::createWithCapacity(9);
+		map = CCArray::create();
 		map->retain();
 		for(int i = 0;i <mapData.size();i++){
 			if(mapData.at(i)!=0){    //陆地
@@ -134,7 +150,7 @@ void Map::initMap(int level){
 void Map::addMap(CCLayer* layer){
 	if(map != NULL){
 		for(int i = 0;i < map->count();i++){
-			layer->addChild((CCSprite*)map->objectAtIndex(i));
+			layer->addChild((CCSprite*)map->objectAtIndex(i),-1);
 		}
 	}
 
@@ -172,9 +188,17 @@ bool Map::weaponOn(Role* hero){
 	return shootOn;
 }
 
-void Map::mapMove(){
+void Map::mapMove(CCLayer* parent,Role* role){
 	for(int i = 0;i < map->count();i++){
 		CCSprite* m = (CCSprite*)map->objectAtIndex(i);
+
+		if(i == 0){ //第二大关卡开始，结束玩家飞行状态
+			if(role->isProtected() && role->getState() == Role::FLY){
+				if(m->getTag() < 7 && m->getPositionX() <= Role::POSX){
+					role->nextLevel();
+				}
+			}
+		}
 
 		if(m->getPositionX() > 854){
 			m->setVisible(false);
@@ -214,18 +238,25 @@ void Map::mapMove(){
 			if(!mapUp && i >= map->count() - 3){
 				if(m->getPositionX() + 100 < 200){
 					mapUp = true;
+					role->setProtect(true);
 				}
 			}
 
 			m->setPosition(ccp(x,y));
 			if(m->getPositionX() < 854){
 				m->setVisible(true);
+				if(m->getTag() == 9 && m->getPositionX() + m->getContentSize().width < Role::POSX){
+					role->fly(true);
+				}
 			}
 		}else{
 			map->removeObjectAtIndex(i);
 			m->removeFromParentAndCleanup(true);
 		}
-
-
 	}
+
+	if(map->count() == 0){
+		resetMap(curLevel + 1,parent);
+	}
+
 }

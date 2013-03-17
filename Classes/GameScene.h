@@ -25,5 +25,6 @@ private:
 	Role* hero;
 	float bgX;
 	float speed;
+	CCLabelTTF* overText;
 };
 #endif

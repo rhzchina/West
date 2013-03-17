@@ -7,13 +7,15 @@ Role::Role(CCLayer* parent)
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("hero.plist","hero.png");
 	CCSpriteFrame* prepare = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("run_1.png");
 	hero = CCSprite::createWithSpriteFrame(prepare);
-	hero->setPosition(ccp(200,130));
+	hero->setPosition(ccp(POSX,POSY));
 	weapon = Weapon::create("weapon1.png",hero);
 	parent->addChild(this);   //英雄对象也加入管理
 	parent->addChild(weapon);
 	parent->addChild(hero);
 	state = 0;
-	//protecting = false;
+	protecting = false;
+	die = false;
+	changeState(NORMAL);
 }
 
 
@@ -23,8 +25,14 @@ Role::~Role(void)
 	hero = NULL;
 }
 
-void Role::setProtect(){
-	protecting = true;
+void Role::setProtect(bool b){
+	protecting = b;
+}
+
+void Role::nextLevel(){
+	protecting = false;
+	changeState(JUMP);
+	hero->runAction(CCMoveTo::create(1,ccp(POSX,0)));
 }
 
 void Role::jump(){
@@ -67,6 +75,11 @@ void Role::actionCallback(){
 		hold();
 	}else if(state == HOLD){
 		changeState(NORMAL);
+	}else if(state == OVER){
+		changeState(FLY);
+	}else if(state == FALL){
+		die = true;
+		hero->stopAllActions();
 	}
 }
 
@@ -80,10 +93,20 @@ void Role::weaponDone(int speed,float frameTime){
 void Role::fall(){
 	if(!protecting && state != FALL){
 		state = FALL;
-		hero->runAction(CCMoveTo::create(0.3,ccp(hero->getPositionX(),0)));
+		hero->runAction(CCSequence::create(CCMoveTo::create(0.2,ccp(hero->getPositionX(),0)),CCCallFunc::create(this,callfunc_selector(Role::actionCallback)),NULL));
 	}
 }
-	
+
+//over参数指定是否是一关结束的飞行
+void Role::fly(bool over){
+	if(state != OVER && state != FLY){
+	if(over){
+		changeState(JUMP);
+		state = OVER;
+	}
+	hero->runAction(CCSequence::create(CCJumpTo::create(1,ccp(POSX,300),100,1),CCCallFunc::create(this,callfunc_selector(Role::actionCallback)),NULL));
+	}
+}
 
 void Role::changeState(int s){
 	if(state == ATTACK){
