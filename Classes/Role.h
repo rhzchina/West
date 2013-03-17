@@ -20,13 +20,16 @@ public:
 	void changeState(int);
 	int getState(){return state;}
 	CCSprite* getSprite(){return hero;}
-	void jump(CCPoint);
+	void jump();
 	void hold();
 	void actionCallback();
-	void checkWeaponSchedule(float );
 	void fall();
 	void resetWeapon();
+	CCRect getWeaponRange();
+	void weaponDone(int,float);  //ÎäÆ÷»÷ÖÐ
+	void setProtect();
 private:
+	bool protecting;   //ÎÞµÐ×´Ì¬
 	int state;
 	bool checkOnLand;
 	CCSprite* hero;

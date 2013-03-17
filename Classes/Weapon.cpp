@@ -12,15 +12,16 @@ Weapon::~Weapon(void)
 }
 
 void Weapon::actionCallback(){
-	shootDone = true;
+	//shootDone = true;
+	reset();
 }
-void Weapon::shoot(CCPoint p){
+void Weapon::shoot(){
 	setPosition(owner->getPosition());
 	setVisible(true);
-	float time = POINT_INSTANCE(p,getPosition()) / 1200.0f;
-	runAction(CCSequence::create(CCMoveTo::create(time,p),
+	float time = POINT_INSTANCE(ccp(300,480),getPosition()) / 1200.0f;
+	runAction(CCSequence::create(CCMoveTo::create(time,ccp(300,480 + getContentSize().height/2)),
 		CCCallFunc::create(this,callfunc_selector(Weapon::actionCallback)),
-		CCMoveTo::create(3,ccp(0,p.y)),NULL));
+		NULL));
 }
 
 void Weapon::reset(){

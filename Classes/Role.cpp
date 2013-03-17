@@ -1,4 +1,5 @@
 #include "Role.h"
+#include "tool.h"
 
 
 Role::Role(CCLayer* parent)
@@ -6,12 +7,13 @@ Role::Role(CCLayer* parent)
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("hero.plist","hero.png");
 	CCSpriteFrame* prepare = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("run_1.png");
 	hero = CCSprite::createWithSpriteFrame(prepare);
-	hero->setPosition(ccp(100,130));
-	weapon = Weapon::create("CloseSelected.png",hero);
+	hero->setPosition(ccp(200,130));
+	weapon = Weapon::create("weapon1.png",hero);
 	parent->addChild(this);   //英雄对象也加入管理
 	parent->addChild(weapon);
 	parent->addChild(hero);
 	state = 0;
+	//protecting = false;
 }
 
 
@@ -21,8 +23,11 @@ Role::~Role(void)
 	hero = NULL;
 }
 
+void Role::setProtect(){
+	protecting = true;
+}
 
-void Role::jump(CCPoint p){
+void Role::jump(){
 	if(hero){
 		if(state == NORMAL){
 			changeState(JUMP);
@@ -30,9 +35,8 @@ void Role::jump(CCPoint p){
 				CCCallFunc::create(this,callfunc_selector(Role::actionCallback))
 				,NULL));
 		}else if(state == JUMP){
-			weapon->shoot(ccp(300,480));
+			weapon->shoot();
 			state = WAIT;
-			schedule(schedule_selector(Role::checkWeaponSchedule));
 		}
 	}
 }
@@ -51,7 +55,6 @@ void Role::hold(){
 
 void Role::resetWeapon(){
 	weapon->reset();
-	unschedule(schedule_selector(Role::checkWeaponSchedule));
 }
 
 void Role::actionCallback(){
@@ -67,15 +70,15 @@ void Role::actionCallback(){
 	}
 }
 
-void Role::checkWeaponSchedule(float dt){
-	if(weapon->isShootDone()){
-		state = ATTACK;
-		unschedule(schedule_selector(Role::checkWeaponSchedule));
-	}
+void Role::weaponDone(int speed,float frameTime){
+	state = ATTACK;
+	weapon->stopAllActions();
+	float time = POINT_INSTANCE(ccp(0,weapon->getPositionY()),ccp(weapon->getPositionX(),weapon->getPositionY())) / (speed / frameTime); 
+	weapon->runAction(CCMoveTo::create(time,ccp(0,weapon->getPositionY())));
 }
 
 void Role::fall(){
-	if(state != FALL){
+	if(!protecting && state != FALL){
 		state = FALL;
 		hero->runAction(CCMoveTo::create(0.3,ccp(hero->getPositionX(),0)));
 	}
@@ -123,4 +126,9 @@ void Role::changeState(int s){
 	}
 	CCAnimate* ani = CCAnimate::create(CCAnimation::createWithSpriteFrames(frames,0.1));
 	hero->runAction(CCRepeatForever::create(ani));
+}
+
+CCRect Role::getWeaponRange(){
+	return CCRectMake(weapon->getPositionX(),weapon->getPositionY(),
+		weapon->getContentSize().width / 2,weapon->getContentSize().height / 2);
 }

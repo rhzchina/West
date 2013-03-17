@@ -39,8 +39,7 @@ bool GameScene::init(){
 		scrollBg->setPosition(ccp(0,0));
 		//scrollBg1->setPosition(ccp(scrollBg->getContentSize().width,0));
 		//初始化地图
-		map = new Map();
-		map->initMap(1);
+		map = new Map(1);
 		map->addMap(this);
 		//生成主角
 		hero = new Role(this);
@@ -61,7 +60,7 @@ CCScene* GameScene::scene(){
 void GameScene::ccTouchesBegan(CCSet* touches,CCEvent* event){
 	CCTouch* touch = (CCTouch*)touches->anyObject();
 	CCPoint location = CCDirector::sharedDirector()->convertToGL(touch->getLocationInView());
-	hero->jump(location);
+	hero->jump();
 
 	CCLog("(%f,%f)",location.x,location.y);
 
@@ -95,6 +94,10 @@ void GameScene::bgMove(float dt){
 		if(!map->onLand(hero->getSprite())) {
 			hero->fall();
 		 }
+	}
+
+	if(map->weaponOn(hero)){
+		hero->weaponDone(map->getSpeed(),dt);
 	}
 }
 

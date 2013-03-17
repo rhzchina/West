@@ -12,11 +12,11 @@ public:
 
 	Weapon(void);
 	~Weapon(void);
-	void shoot(CCPoint);
+	void shoot();
 	void draw();
 	void reset();
 	void actionCallback();
-
+	void done(){shootDone = true;}
 	bool isShootDone(){return shootDone;}
 private:
 
