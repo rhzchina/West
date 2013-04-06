@@ -18,7 +18,7 @@ void Weapon::actionCallback(){
 void Weapon::shoot(){
 	setPosition(owner->getPosition());
 	setVisible(true);
-	float time = POINT_INSTANCE(ccp(400,480),getPosition()) / 1200.0f;
+	float time = POINT_INSTANCE(ccp(400,480),getPosition()) / 1400.0f;
 	runAction(CCSequence::create(CCMoveTo::create(time,ccp(400,480 + getContentSize().height/2)),
 		CCCallFunc::create(this,callfunc_selector(Weapon::actionCallback)),
 		NULL));
@@ -43,7 +43,7 @@ Weapon* Weapon::create(const char *pszFileName,CCSprite* o){
 }
 
 void Weapon::draw(){
-    glEnable(GL_LINE_SMOOTH); 
+   // glEnable(GL_LINE_SMOOTH);
 	glLineWidth(1.0f);
 	ccDrawLine(ccp(owner->getPositionX() + owner->getContentSize().width / 2 - getPositionX(),
 		owner->getPositionY() + owner->getContentSize().height / 2 - getPositionY() - 10)

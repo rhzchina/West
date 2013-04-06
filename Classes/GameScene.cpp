@@ -1,4 +1,7 @@
 #include "GameScene.h"
+#include "StartScene.h"
+#include "GameData.h"
+#include <math.h>
 GameScene::GameScene(void)
 {
 	scrollBg1 = NULL;
@@ -8,6 +11,7 @@ GameScene::GameScene(void)
 	map = NULL;
 	hero = NULL;
 	overText = NULL;
+	items = NULL;
 
 }
 
@@ -23,28 +27,21 @@ bool GameScene::init(){
 		CC_BREAK_IF(!CCLayer::init());
 		setTouchEnabled(true);
 
-		scrollBg = CCSprite::create("bg2.jpg");
+		initBgItems(GameData::getLevel());
+		
 		//scrollBg1 = CCSprite::createWithTexture(scrollBg->getTexture());
-		sky = CCSprite::create("tian1.jpg");
 
 		overText = CCLabelTTF::create("Game OVer!!!\nTouch screen to replay,Let's go","黑体",30);
 		overText->setColor(ccc3(255,0,0));
 		overText->setPosition(ccp(425,240));
 		overText->setVisible(false);
 
-		CC_BREAK_IF(!scrollBg);
 		//CC_BREAK_IF(!scrollBg1);
-		CC_BREAK_IF(!sky);
 
-		addChild(sky,-3);
-		addChild(scrollBg,-2);
 		addChild(overText,1);
 		//addChild(scrollBg1);
-		scrollBg->setAnchorPoint(ccp(0,0));
 		//scrollBg1->setAnchorPoint(ccp(0,0));
 		
-		sky->setPosition(ccp(sky->getContentSize().width/2,CCDirector::sharedDirector()->getWinSize().height - sky->getContentSize().height / 2));
-		scrollBg->setPosition(ccp(0,0));
 		//scrollBg1->setPosition(ccp(scrollBg->getContentSize().width,0));
 		//初始化地图
 		map = new Map(1,this);
@@ -69,7 +66,7 @@ void GameScene::ccTouchesBegan(CCSet* touches,CCEvent* event){
 	CCPoint location = CCDirector::sharedDirector()->convertToGL(touch->getLocationInView());
 	hero->jump();
 	if(hero->isDie()){
-		CCDirector::sharedDirector()->replaceScene(GameScene::scene());
+		CCDirector::sharedDirector()->replaceScene(StartScene::scene());
 	}
 }
 
@@ -114,5 +111,105 @@ void GameScene::bgMove(float dt){
 		unschedule(schedule_selector(GameScene::bgMove));
 		overText->setVisible(true);
 	}
+
+	if(items->getPositionX() > -items->getContentSize().width){
+		items->setPositionX(items->getPositionX() - speed / 2);
+	}else{
+		srand(time(0));
+		if(rand() % 10 == 5){
+			items->setPositionX(854);
+		}
+	}
+}
+
+void GameScene::initBgItems(int level){
+		char dir[20];
+		sprintf(dir,"land%d/",level);
+		string name(dir);
+		scrollBg = CCSprite::create(name.append("bg.jpg").c_str());
+		SETANCHPOS(scrollBg,0,0,0,0);
+		addChild(scrollBg,-2);
+
+		char tempName[20];
+		CCSprite* temp = NULL;
+	    items = CCLayer::create();
+		int x = 0;
+		switch(level){
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3:
+			items->setContentSize(CCSizeMake(1380,480));
+			//水晶宫
+			name.replace(name.begin(),name.end(),dir);
+			temp = CCSprite::create(name.append("sea_house.png").c_str());
+			SETANCHPOS(temp,400,0,0.5,0);
+			items->addChild(temp);
+			//海中的山
+			for(int i = 0; i < 3;i++){
+				sprintf(tempName,"land%d/hill%d.png",level,(i+1));
+				temp = CCSprite::create(tempName);
+				SETANCHPOS(temp,x,0,0,0);
+				items->addChild(temp,-1);
+				x += temp->getContentSize().width;
+			}
+			//水晶宫前门牌
+			temp = CCSprite::create(name.replace(name.begin(),name.end(),dir).append("plate.png").c_str());
+			SETANCHPOS(temp,700,0,0,0);
+			items->addChild(temp);
+			//珊瑚和石头hk:海葵
+			x =100;
+			for(int i = 0;i < 5; i++){
+				srand(time(0) + i);
+				sprintf(tempName,"land%d/stone%d.png",level,(rand() % 5 + 1));
+				temp = CCSprite::create(tempName);
+				SETANCHPOS(temp,x,0,0,0);
+				items->addChild(temp,3);
+				int height = temp->getContentSize().height;
+				srand(time(0) - i);
+				sprintf(tempName,"land%d/plant%d.png",level,(rand() % 5 + 1));
+				temp = CCSprite::create(tempName);
+				SETANCHPOS(temp,x,height / 3,0,0);
+				items->addChild(temp,2);
+				int space = temp->getContentSize().width;
+
+				if(rand() % 5 == i){
+					sprintf(tempName,"land%d/hk.png",level);
+					temp = CCSprite::create(tempName);
+					SETANCHPOS(temp,x,0,0,0);
+					items->addChild(temp,3);
+				}
+				srand(time(0) + (i + 1) * 2);
+				x += space * (rand() % 3 + 2);
+			}
+			break;
+		case 4:
+			//石人碉像
+			name.replace(name.begin(),name.end(),dir);
+			temp = CCSprite::create(name.append("stone.png").c_str());
+			SETANCHPOS(temp,854,0,1,0);
+			items->addChild(temp);
+			//背后的山	
+			for(int i = 0; i < 2;i++){
+				sprintf(tempName,"land%d/hill%d.png",level,(i+1));
+				temp = CCSprite::create(tempName);
+				SETANCHPOS(temp,x,0,0,0);
+				items->addChild(temp,-1);
+				x += temp->getContentSize().width;
+			}
+			//前方的草地
+			x = 0;
+			for(int i = 0; i < 8;i++){
+				sprintf(tempName,"land%d/grass%d.png",level,rand() % 2 + 1);
+				temp = CCSprite::create(tempName);
+				SETANCHPOS(temp,x,rand() % 30,0,0);
+				items->addChild(temp,1);
+				x += temp->getContentSize().width * 3 / (rand() % 2 + 2);
+			}
+			break;
+		}
+		SETANCHPOS(items,0,0,0,0);
+		addChild(items);
 }
 

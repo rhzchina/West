@@ -1,7 +1,8 @@
 #include "Map.h"
+#include "GameData.h"
+#include "GameScene.h"
 
-
-Map::Map(int level,CCLayer* parent)
+Map::Map(int level,GameScene* parent)
 {
 	/*map = NULL;
 	mapUp = false;                                                          
@@ -9,7 +10,7 @@ Map::Map(int level,CCLayer* parent)
 	createData(level);
 	initMap(1);
 	curLevel = 1;*/
-	speed = 5;
+	speed = 5.1;
 	resetMap(level,parent);
 }
 
@@ -17,7 +18,7 @@ Map::~Map(void)
 {
 }
 
-void Map::resetMap(int level,CCLayer* parent){
+void Map::resetMap(int level,GameScene* parent){
 	curLevel = level;
 	map = NULL;
 	mapUp = false;
@@ -27,7 +28,7 @@ void Map::resetMap(int level,CCLayer* parent){
 		mapData.clear();
 	}
 	createData(level);
-	initMap(1);
+	initMap(GameData::getLevel());
 	addMap(parent);
 }
 
@@ -39,49 +40,49 @@ void Map::createData(int level){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 2){
-		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 5, 0, 5, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3,
+		int array[] =  {0,0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 5, 0, 5, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3,
 			0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0,7,8,9 };
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 3){
-		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0,
+		int array[] =  {0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0,
 			1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0,7,8,9 };
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 4){
-		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 0, 6, 0, 0, 0, 1, 3, 0, 0, 6, 0, 0,
+		int array[] =  { 0,0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 0, 6, 0, 0, 0, 1, 3, 0, 0, 6, 0, 0,
 			0, 1, 3, 0, 5, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0, 1, 2, 6, 2, 3, 0, 5, 0, 4, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 5){
-		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 5, 0, 5,
+		int array[] =  {0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 5, 0, 5,
 			0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 6){
-		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0, 1, 3,
+	int array[] =  {0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0, 1, 3,
 			0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 7){
-		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 5, 0, 5,
+		int array[] =  {0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 5, 0, 5,
 			0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 8){
-		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 0, 6, 0,
+		int array[] =  {0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 0, 6, 0,
 			0, 0, 1, 3, 0, 5, 0, 0, 6, 0, 0, 0, 1, 2, 3, 1, 2, 6, 2, 3, 0, 5, 0, 4, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 9){
-		int array[] =  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 0, 6, 0,
+		int array[] =  { 0,0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 0, 6, 0,
 			0, 0, 1, 3, 0, 5, 0, 0, 6, 0, 0, 0, 1, 2, 3,0, 1, 2, 6, 2, 3, 0, 5, 0, 4, 0,7,8,9 };
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
@@ -97,14 +98,13 @@ void Map::createData(int level){
 void Map::initMap(int level){
 	float x = 0;
 	float y = 0;
-	switch(level){
-	case 1:
+
 		map = CCArray::create();
 		map->retain();
 		for(int i = 0;i <mapData.size();i++){
 			if(mapData.at(i)!=0){    //陆地
 				char buf[30];
-				sprintf(buf,"land1_%d.png",mapData[i]);
+				sprintf(buf,"land%d/land%d.png",level,mapData[i]);
 				CCSprite* land = CCSprite::create(buf);
 				land->setAnchorPoint(ccp(0,0));
 				if(mapData.at(i)==6){   //顶部陆地
@@ -136,21 +136,15 @@ void Map::initMap(int level){
 				}
 				map->addObject(land);
 			}else{   //空地
-				x += 100;
+				x += 140;
 			}
 		}
-		break;
-	case 2:
-		break;
-	case 3:
-		break;
-	}
 }
 
-void Map::addMap(CCLayer* layer){
+void Map::addMap(GameScene* layer){
 	if(map != NULL){
 		for(int i = 0;i < map->count();i++){
-			layer->addChild((CCSprite*)map->objectAtIndex(i),-1);
+		layer->addChild((CCSprite*)map->objectAtIndex(i),10);
 		}
 	}
 
@@ -188,7 +182,7 @@ bool Map::weaponOn(Role* hero){
 	return shootOn;
 }
 
-void Map::mapMove(CCLayer* parent,Role* role){
+void Map::mapMove(GameScene* parent,Role* role){
 	for(int i = 0;i < map->count();i++){
 		CCSprite* m = (CCSprite*)map->objectAtIndex(i);
 
@@ -196,6 +190,8 @@ void Map::mapMove(CCLayer* parent,Role* role){
 			if(role->isProtected() && role->getState() == Role::FLY){
 				if(m->getTag() < 7 && m->getPositionX() <= Role::POSX){
 					role->nextLevel();
+					speed += 0.5;  //每一关增加0.5速 度
+					parent->addSpeed(0.5);
 				}
 			}
 		}

@@ -4,14 +4,14 @@
 
 Role::Role(CCLayer* parent)
 {
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("hero.plist","hero.png");
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("hero_hacker.plist","hero_hacker.png");
 	CCSpriteFrame* prepare = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("run_1.png");
 	hero = CCSprite::createWithSpriteFrame(prepare);
 	hero->setPosition(ccp(POSX,POSY));
 	weapon = Weapon::create("weapon1.png",hero);
 	parent->addChild(this);   //英雄对象也加入管理
 	parent->addChild(weapon);
-	parent->addChild(hero);
+	parent->addChild(hero,11);
 	state = 0;
 	protecting = false;
 	die = false;

@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "Map.h"
 #include "Role.h"
+
 USING_NS_CC;
 class GameScene : public CCLayer 
 {
@@ -11,10 +12,13 @@ public:
 	~GameScene(void);
 
 	bool init();
+	void initBgItems(int);
 	void bgMove(float);
 	void ccTouchesBegan(CCSet* ,CCEvent*);
 	void ccTouchesMoved(CCSet*,CCEvent*);
 	void ccTouchesEnded(CCSet*,CCEvent*);
+
+	void addSpeed(float add){speed += add;}
 	static CCScene* scene();
 	CREATE_FUNC(GameScene);
 private:
@@ -26,5 +30,6 @@ private:
 	float bgX;
 	float speed;
 	CCLabelTTF* overText;
+	CCLayer* items;
 };
 #endif
