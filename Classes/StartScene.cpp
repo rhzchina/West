@@ -76,7 +76,7 @@ void StartScene::btnCallback(CCObject* sender){
 	switch(((CCNode*)sender)->getTag()){
 	//startBtn
 	case 1:
-		CCDirector::sharedDirector()->replaceScene(GameScene::scene());
+		CCDirector::sharedDirector()->replaceScene(SelectScene::scene());
 		break;
 	//shopBtn
 	case 2:

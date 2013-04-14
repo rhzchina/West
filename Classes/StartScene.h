@@ -2,6 +2,7 @@
 #define STARTSCENE_H
 #include "cocos2d.h"
 #include "tool.h"
+#include "SelectScene.h"
 
 USING_NS_CC;
 class StartScene : public CCLayer
@@ -14,7 +15,6 @@ public:
 	bool init();
 	void btnCallback(CCObject*);
 	static CCScene* scene();
-
 
 };
 

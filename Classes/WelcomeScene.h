@@ -1,6 +1,7 @@
 #ifndef WELCOME_H
 #define WELCOME_H
 #include "cocos2d.h"
+#include "StartScene.h"
 USING_NS_CC;
 
 class WelcomeScene : public CCLayer
