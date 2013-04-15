@@ -35,6 +35,7 @@ Weapon* Weapon::create(const char *pszFileName,CCSprite* o){
 	if(weapon && weapon->initWithFile(pszFileName)){
 		weapon->autorelease();
 		weapon->reset();
+		SETANCHPOS(weapon,0,0,0,0);
 		weapon->owner = o;
 		return weapon;
 	}
@@ -45,8 +46,8 @@ Weapon* Weapon::create(const char *pszFileName,CCSprite* o){
 void Weapon::draw(){
    // glEnable(GL_LINE_SMOOTH);
 	glLineWidth(1.0f);
-	ccDrawLine(ccp(owner->getPositionX() + owner->getContentSize().width / 2 - getPositionX(),
-		owner->getPositionY() + owner->getContentSize().height / 2 - getPositionY() - 10)
+	ccDrawLine(ccp(owner->getPositionX() + owner->getContentSize().width / 2 - getPositionX() - getContentSize().width / 2,
+		owner->getPositionY() + owner->getContentSize().height / 2 - getPositionY() - getContentSize().height / 2 - 10)
 		,ccp(getContentSize().width / 2,getContentSize().height / 2));
 	CCSprite::draw();
 }

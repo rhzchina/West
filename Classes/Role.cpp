@@ -8,7 +8,7 @@ Role::Role(CCLayer* parent)
 	CCSpriteFrame* prepare = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("run_1.png");
 	hero = CCSprite::createWithSpriteFrame(prepare);
 	hero->setPosition(ccp(POSX,POSY));
-	weapon = Weapon::create("weapon1.png",hero);
+	weapon = Weapon::create("weapon/weapon1.png",hero);
 	parent->addChild(this);   //英雄对象也加入管理
 	parent->addChild(weapon);
 	parent->addChild(hero,11);
@@ -152,6 +152,6 @@ void Role::changeState(int s){
 }
 
 CCRect Role::getWeaponRange(){
-	return CCRectMake(weapon->getPositionX(),weapon->getPositionY(),
+	return CCRectMake(weapon->getPositionX() + weapon->getContentSize().width / 2,weapon->getPositionY(),
 		weapon->getContentSize().width / 2,weapon->getContentSize().height / 2);
 }
