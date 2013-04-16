@@ -1,3 +1,4 @@
 *.win32
 main.h
 main.cpp
+*.android
