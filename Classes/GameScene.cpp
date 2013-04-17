@@ -135,11 +135,11 @@ void GameScene::initBgItems(int level){
 	    items = CCLayer::create();
 		int x = 0;
 		switch(level){
-		case 1:
-			break;
-		case 2:
-			break;
 		case 3:
+			break;
+		case 4:
+			break;
+		case 1:
 			items->setContentSize(CCSizeMake(1380,480));
 			//Ë®¾§¹¬
 			name.replace(name.begin(),name.end(),dir);
@@ -184,7 +184,7 @@ void GameScene::initBgItems(int level){
 				x += space * (rand() % 3 + 2);
 			}
 			break;
-		case 4:
+		case 2:
 			//Ê¯ÈËµïÏñ
 			name.replace(name.begin(),name.end(),dir);
 			temp = CCSprite::create(name.append("stone.png").c_str());
