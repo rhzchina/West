@@ -24,7 +24,6 @@ bool StartScene::init(){
 		CONV(btnText,"开始游戏");
 		CCMenuItemImage* startBtn = CCMenuItemImage::create("btn_bg.png","btn_bg.png",this,menu_selector(StartScene::btnCallback));
 		CCMenuItemFont* startFont = CCMenuItemFont::create(btnText);
-		startFont->setColor(ccc3(230,150,100));
 		CCMenu* startMenu = CCMenu::create(startBtn,startFont,NULL);
 	
 		CONV(btnText,"商城");

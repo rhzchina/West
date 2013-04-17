@@ -47,7 +47,6 @@ bool GameScene::init(){
 		map = new Map(1,this);
 		//Éú³ÉÖ÷½Ç
 		hero = new Role(this);
-		this->setZOrder(100);
 		schedule(schedule_selector(GameScene::bgMove));
 		bRet = true;
 	}while(0);

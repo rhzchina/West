@@ -50,7 +50,7 @@ bool SelectScene::init(){
 		scroll->setViewSize(CCSizeMake(854,480));
 		scroll->setContentSize(CCSizeMake(2400,480));
 		scroll->setContainer(container);
-		scroll->setDirection(CCScrollViewDirection::kCCScrollViewDirectionHorizontal);
+		scroll->setDirection(kCCScrollViewDirectionHorizontal);
 		addChild(scroll);
 
 		success = true;
