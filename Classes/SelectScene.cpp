@@ -20,7 +20,7 @@ bool SelectScene::init(){
 		setTouchEnabled(true);
 
 		GameData::getInstance();
-		CCSprite* bg = CCSprite::create("startBg.jpg");
+		CCSprite* bg = CCSprite::create("shopBg.jpg");
 		CC_BREAK_IF(!bg);
 		SETANCHPOS(bg,0,0,0,0);
 		addChild(bg);
@@ -49,6 +49,7 @@ bool SelectScene::init(){
 		SETANCHPOS(scroll,0,0,0,0);
 		scroll->setViewSize(CCSizeMake(854,480));
 		scroll->setContentSize(CCSizeMake(2400,480));
+
 		scroll->setContainer(container);
 		scroll->setDirection(kCCScrollViewDirectionHorizontal);
 		addChild(scroll);
