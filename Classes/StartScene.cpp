@@ -2,6 +2,7 @@
 #include "GameScene.h"
 #include "tool.h"
 #include "GameData.h"
+#include "WelcomeScene.h"
 
 StartScene::StartScene(void)
 {
@@ -21,9 +22,8 @@ bool StartScene::init(){
 		SETANCHPOS(bg,0,0,0,0);
 		addChild(bg);
 
-		CCSpriteFrameCache* cache = CCSpriteFrameCache::sharedSpriteFrameCache();
-		cache->addSpriteFramesWithFile("start.plist","start.png");
 
+		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("start.plist","start.png");
 		//游戏菜单
 		CCMenu* menu = CCMenu::create();
 		CC_BREAK_IF(!menu);
@@ -67,6 +67,7 @@ bool StartScene::init(){
 		SETANCHPOS(title,500,250,0,0);
 		addChild(title);
 
+		//开关按钮
 		CCMenu* sound = CCMenu::create();
 		CC_BREAK_IF(!sound);
 		SETANCHPOS(sound,50,50,0,0);
@@ -119,9 +120,8 @@ void StartScene::btnCallback(CCObject* sender){
 		break;
 		//shopBtn
 	case 2:
-		GameData::getInstance();
-		GameData::addLevel();
-		CCLog("%d",GameData::getLevel());
+		CCDirector::sharedDirector()->replaceScene(WelcomeScene::scene());
+		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFrames();
 		break;
 	case 3:
 		CCDirector::sharedDirector()->end();
