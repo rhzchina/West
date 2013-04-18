@@ -20,33 +20,72 @@ bool StartScene::init(){
 
 		SETANCHPOS(bg,0,0,0,0);
 		addChild(bg);
-		char* btnText = NULL;
-		CONV(btnText,"开始游戏");
-		CCMenuItemImage* startBtn = CCMenuItemImage::create("btn_bg.png","btn_bg.png",this,menu_selector(StartScene::btnCallback));
-		CCMenuItemFont* startFont = CCMenuItemFont::create(btnText);
-		CCMenu* startMenu = CCMenu::create(startBtn,startFont,NULL);
-	
-		CONV(btnText,"商城");
-		CCMenuItemImage* shopBtn = CCMenuItemImage::create("btn_bg.png","btn_bg.png",this,menu_selector(StartScene::btnCallback));
-		CCMenuItemFont* shopFont = CCMenuItemFont::create(btnText);
-		CCMenu* shopMenu = CCMenu::create(shopBtn,shopFont,NULL);
 
-		CONV(btnText,"退出游戏");
-		CCMenuItemImage* exitBtn = CCMenuItemImage::create("btn_bg.png","btn_bg.png",this,menu_selector(StartScene::btnCallback));
-		CCMenuItemFont* exitFont = CCMenuItemFont::create(btnText);
-		CCMenu* exitMenu = CCMenu::create(exitBtn,exitFont,NULL);
+		CCSpriteFrameCache* cache = CCSpriteFrameCache::sharedSpriteFrameCache();
+		cache->addSpriteFramesWithFile("start.plist","start.png");
 
-		SETANCHPOS(startMenu,750,200,0,0);
-		SETANCHPOS(shopMenu,750,130,0,0);
-		SETANCHPOS(exitMenu,750,50,0,0);
-	
-		startBtn->setTag(1);
-		shopBtn->setTag(2);
-		exitBtn->setTag(3);
+		//游戏菜单
+		CCMenu* menu = CCMenu::create();
+		CC_BREAK_IF(!menu);
+		SETANCHPOS(menu,650,130,0,0);
+		addChild(menu);
 
-		addChild(startMenu);
-		addChild(shopMenu);
-		addChild(exitMenu);
+		CCMenuItemSprite* start = CCMenuItemSprite::create(
+			CCSprite::createWithSpriteFrameName("start.png"),
+			CCSprite::createWithSpriteFrameName("start.png"),
+			this,menu_selector(StartScene::btnCallback));	
+		CC_BREAK_IF(!start);
+		start->setTag(1);
+		menu->addChild(start);
+
+		CCMenuItemSprite* shop  = CCMenuItemSprite::create(
+			CCSprite::createWithSpriteFrameName("shop.png"),
+			CCSprite::createWithSpriteFrameName("shop.png"),
+			this,menu_selector(StartScene::btnCallback));
+		CC_BREAK_IF(!shop);
+		shop->setTag(2);
+		menu->addChild(shop);
+
+		CCMenuItemSprite* more = CCMenuItemSprite::create(
+			CCSprite::createWithSpriteFrameName("more.png"),
+			CCSprite::createWithSpriteFrameName("more.png"),
+			this,menu_selector(StartScene::btnCallback));
+		CC_BREAK_IF(!more);
+		more->setTag(3);
+		menu->addChild(more);
+
+		menu->alignItemsVertically();
+
+		//标题
+		CCSprite* titleBg = CCSprite::createWithSpriteFrameName("name_bg.png");
+		CC_BREAK_IF(!titleBg);
+		SETANCHPOS(titleBg,500,250,0,0);
+		addChild(titleBg);
+
+		CCSprite* title = CCSprite::createWithSpriteFrameName("name.png");
+		CC_BREAK_IF(!title);
+		SETANCHPOS(title,500,250,0,0);
+		addChild(title);
+
+		CCMenu* sound = CCMenu::create();
+		CC_BREAK_IF(!sound);
+		SETANCHPOS(sound,50,50,0,0);
+		addChild(sound);
+
+		soundOn = CCMenuItemSprite::create(
+			CCSprite::createWithSpriteFrameName("sound_off.png"),
+			CCSprite::createWithSpriteFrameName("sound_off.png"),
+			this,NULL);
+
+		soundOff = CCMenuItemSprite::create(
+			CCSprite::createWithSpriteFrameName("sound_on.png"),
+			CCSprite::createWithSpriteFrameName("sound_on.png"),
+			this,NULL);
+
+		CCMenuItemToggle* toggle = CCMenuItemToggle::createWithTarget(this,menu_selector(StartScene::btnCallback),soundOn,soundOff,NULL);
+		toggle->setTag(4);
+
+		sound->addChild(toggle);
 
 
 		success = true;
@@ -56,7 +95,7 @@ bool StartScene::init(){
 
 CCScene* StartScene::scene(){
 	CCScene* scene = NULL;
-	
+
 	do{
 		scene = CCScene::create();
 		CC_BREAK_IF(!scene);
@@ -65,7 +104,7 @@ CCScene* StartScene::scene(){
 		CC_BREAK_IF(!layer);
 
 		scene->addChild(layer);
-			
+
 	}while(false);
 
 	return scene;
@@ -73,12 +112,12 @@ CCScene* StartScene::scene(){
 
 void StartScene::btnCallback(CCObject* sender){
 	switch(((CCNode*)sender)->getTag()){
-	//startBtn
+		//startBtn
 	case 1:
-GameData::getInstance();
+		GameData::getInstance();
 		CCDirector::sharedDirector()->replaceScene(SelectScene::scene());
 		break;
-	//shopBtn
+		//shopBtn
 	case 2:
 		GameData::getInstance();
 		GameData::addLevel();
@@ -86,6 +125,13 @@ GameData::getInstance();
 		break;
 	case 3:
 		CCDirector::sharedDirector()->end();
+		break;
+	case 4:
+		if(((CCMenuItemToggle*)sender)->selectedItem() == soundOn){
+			CCLOG("close sound");
+		}else{
+			CCLOG("open sound");
+		}
 		break;
 	}
 }

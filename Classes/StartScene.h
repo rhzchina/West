@@ -16,6 +16,9 @@ public:
 	void btnCallback(CCObject*);
 	static CCScene* scene();
 
+private:
+	CCMenuItemSprite* soundOn;
+	CCMenuItemSprite* soundOff;
 };
 
 #endif

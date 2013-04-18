@@ -69,7 +69,7 @@
                 <key>sourceSize</key>
                 <string>{140,61}</string>
             </dict>
-            <key>soud_on.png</key>
+            <key>sound_off.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{424,177},{102,82}}</string>
@@ -82,7 +82,7 @@
                 <key>sourceSize</key>
                 <string>{102,86}</string>
             </dict>
-            <key>sound_off.png</key>
+            <key>sound_on.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{322,177},{102,82}}</string>
@@ -118,7 +118,7 @@
             <key>size</key>
             <string>{506,488}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:8ca90f9b3d20c8354f8856247b7804b5$</string>
+            <string>$TexturePacker:SmartUpdate:a1ff5e5470ad74814a584897ede9308e$</string>
             <key>textureFileName</key>
             <string>start.png</string>
         </dict>
