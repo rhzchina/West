@@ -5,6 +5,7 @@ GameData* GameData::instance = NULL;
 GameData::GameData(void)
 {
 	level = 1;
+	gold = 2;
 }
 
 GameData::~GameData(void)

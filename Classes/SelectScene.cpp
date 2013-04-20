@@ -1,4 +1,5 @@
 #include "SelectScene.h"
+#include "StartScene.h"
 #include "tool.h"
 
 SelectScene::SelectScene(void)
@@ -19,40 +20,71 @@ bool SelectScene::init(){
 
 		setTouchEnabled(true);
 
-		GameData::getInstance();
 		CCSprite* bg = CCSprite::create("shopBg.jpg");
 		CC_BREAK_IF(!bg);
 		SETANCHPOS(bg,0,0,0,0);
 		addChild(bg);
 
+		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("choose.plist","choose.png");
+
 		CCLayer* container = CCLayer::create();
 		CC_BREAK_IF(!container);
-		SETANCHPOS(container,0,0,0,0);
+		SETANCHPOS(container,0,50,0,0);
 
 		int x = 0;
 		level = CCArray::createWithCapacity(MAXLEVEL);
 		level->retain();
 		for(int i = 1;i <= MAXLEVEL;i++){
+			//选关背景
+			CCSprite* itemBg = CCSprite::create("choose_bg.png");
+			SETANCHPOS(itemBg,x + 930 / 2,240,0.5,0.5);
+			container->addChild(itemBg);
+
+			//选关名称背景
+			CCSprite* nameBg = CCSprite::createWithSpriteFrameName("name_bg.png");
+			SETANCHPOS(nameBg,x + 854 / 2 - itemBg->getContentSize().width / 2,240,0.5,0.5);
+			container->addChild(nameBg);
+
 			char name[20];
+			//关卡名称
+			sprintf(name,"level%d_name.png",i);
+			CCSprite* levelName = CCSprite::createWithSpriteFrameName(name);
+			SETANCHPOS(levelName,x + 854 / 2 - itemBg->getContentSize().width / 2,240,0.5,0.5);
+			container->addChild(levelName);
+			
 			sprintf(name,"level%d.png",i);
 			CCSprite* item = CCSprite::create(name);
-			SETANCHPOS(item,x,240,0,0.5);
+			SETANCHPOS(item,x + 930 / 2,255,0.5,0.5);
 			CC_BREAK_IF(!item);
 			container->addChild(item);
 			level->addObject(item);
-			x += item->getContentSize().width * 1.5f;
+			x += 854;
 		}
-		container->setContentSize(CCSizeMake(2400,480));
+		container->setContentSize(CCSizeMake(854 * 4,480));
 
 		scroll = CCScrollView::create();
 		CC_BREAK_IF(!scroll);
 		SETANCHPOS(scroll,0,0,0,0);
 		scroll->setViewSize(CCSizeMake(854,480));
-		scroll->setContentSize(CCSizeMake(2400,480));
+		scroll->setContentSize(CCSizeMake(854 * 4,480));
 
 		scroll->setContainer(container);
 		scroll->setDirection(kCCScrollViewDirectionHorizontal);
 		addChild(scroll);
+
+		CCMenu* menu = CCMenu::create();
+		SETANCHPOS(menu,0,0,0,0);
+		addChild(menu);
+
+		CCMenuItemImage* back = CCMenuItemImage::create("back.png","back.png",this,menu_selector(SelectScene::btnCallback));
+		SETANCHPOS(back,740,380,0,0);
+		back->setTag(1);
+		menu->addChild(back);
+
+		//描述背景
+		CCSprite* desBg = CCSprite::create("dlg_short.png");
+		SETANCHPOS(desBg,425,0,0.5,0);
+		addChild(desBg);
 
 		success = true;
 	}while(0);
@@ -110,11 +142,22 @@ int SelectScene::touchedLevel(CCPoint pos){
 	int num = -1;
 	for(int i = 0;i < level->count();i++)	{
 		CCSprite* t = (CCSprite*)level->objectAtIndex(i);
-		if(CCRectMake(scroll->getContentOffset().x + t->getPositionX(),t->getPositionY() - t->getContentSize().height / 2,
+		if(CCRectMake(scroll->getContentOffset().x + t->getPositionX() - t->getContentSize().width / 2,t->getPositionY() - t->getContentSize().height / 2,
 			t->getContentSize().width,t->getContentSize().height).containsPoint(pos)){
 			num = i + 1;
 		}
 	}
 	return num;
 	
+}
+
+void SelectScene::btnCallback(CCObject* sender){
+	switch(((CCNode*)sender)->getTag()){
+	case 1:
+		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFrames();
+		CCDirector::sharedDirector()->replaceScene(StartScene::scene());
+		break;
+	case 2:
+		break;
+	}
 }

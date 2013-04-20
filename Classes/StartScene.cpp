@@ -3,6 +3,7 @@
 #include "tool.h"
 #include "GameData.h"
 #include "WelcomeScene.h"
+#include "SimpleAudioEngine.h"
 
 StartScene::StartScene(void)
 {
@@ -22,6 +23,8 @@ bool StartScene::init(){
 		SETANCHPOS(bg,0,0,0,0);
 		addChild(bg);
 
+		//初始化用户数据
+		GameData::getInstance();
 
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("start.plist","start.png");
 		//游戏菜单
@@ -83,11 +86,13 @@ bool StartScene::init(){
 			CCSprite::createWithSpriteFrameName("sound_on.png"),
 			this,NULL);
 
-		CCMenuItemToggle* toggle = CCMenuItemToggle::createWithTarget(this,menu_selector(StartScene::btnCallback),soundOn,soundOff,NULL);
+		CCMenuItemToggle* toggle = CCMenuItemToggle::createWithTarget(this,menu_selector(StartScene::btnCallback),soundOff,soundOn,NULL);
 		toggle->setTag(4);
 
 		sound->addChild(toggle);
 
+		//SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic(CCFileUtils::sharedFileUtils()->fullPathFromRelativePath("game.ogg"));
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("game.ogg",true);
 
 		success = true;
 	}while(false);
@@ -116,6 +121,7 @@ void StartScene::btnCallback(CCObject* sender){
 		//startBtn
 	case 1:
 		GameData::getInstance();
+		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFrames();
 		CCDirector::sharedDirector()->replaceScene(SelectScene::scene());
 		break;
 		//shopBtn

@@ -7,11 +7,11 @@
             <key>buy.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{117,361},{104,81}}</string>
+                <string>{{121,403},{104,81}}</string>
                 <key>offset</key>
                 <string>{-2,1}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{1,3},{104,81}}</string>
                 <key>sourceSize</key>
@@ -20,7 +20,7 @@
             <key>close.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,263},{89,70}}</string>
+                <string>{{121,265},{89,70}}</string>
                 <key>offset</key>
                 <string>{2,0}</string>
                 <key>rotated</key>
@@ -33,7 +33,7 @@
             <key>clothes.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{192,218},{143,59}}</string>
+                <string>{{194,222},{143,59}}</string>
                 <key>offset</key>
                 <string>{-1,3}</string>
                 <key>rotated</key>
@@ -46,11 +46,11 @@
             <key>god.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{70,308},{51,52}}</string>
+                <string>{{204,367},{51,52}}</string>
                 <key>offset</key>
                 <string>{0,-1}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{5,5},{51,52}}</string>
                 <key>sourceSize</key>
@@ -59,7 +59,7 @@
             <key>gold.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{117,263},{65,45}}</string>
+                <string>{{121,356},{65,45}}</string>
                 <key>offset</key>
                 <string>{0,1}</string>
                 <key>rotated</key>
@@ -85,7 +85,7 @@
             <key>star.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{192,0},{75,62}}</string>
+                <string>{{194,0},{75,62}}</string>
                 <key>offset</key>
                 <string>{0,-1}</string>
                 <key>rotated</key>
@@ -98,7 +98,7 @@
             <key>tip.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{192,75},{143,59}}</string>
+                <string>{{194,77},{143,59}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -111,7 +111,7 @@
             <key>treasure.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,361},{143,58}}</string>
+                <string>{{0,367},{143,58}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -124,7 +124,7 @@
             <key>weapon.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{58,361},{142,59}}</string>
+                <string>{{60,367},{142,59}}</string>
                 <key>offset</key>
                 <string>{1,1}</string>
                 <key>rotated</key>
@@ -142,9 +142,9 @@
             <key>realTextureFileName</key>
             <string>shop.png</string>
             <key>size</key>
-            <string>{254,504}</string>
+            <string>{256,510}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:b104b846c1d91ffa1615e13471ecac44$</string>
+            <string>$TexturePacker:SmartUpdate:3f3c6c1cba2a5e4dd326ccd1bf89626f$</string>
             <key>textureFileName</key>
             <string>shop.png</string>
         </dict>

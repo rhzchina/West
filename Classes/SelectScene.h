@@ -24,6 +24,7 @@ public:
 	
 
 	int touchedLevel(CCPoint);
+	void btnCallback(CCObject*);
 
 private:
 	CCScrollView* scroll;

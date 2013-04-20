@@ -10,9 +10,13 @@ public:
 	static int getLevel();
 	static	void addLevel();
 	static void setLevel(int);
+
+	static int getGold(){return instance->gold;}
+	static void setGold(int g){instance->gold = g;}
 private:
 	GameData(void);
 	int level;
+	int gold;
 	static GameData* instance;
 };
 #endif
