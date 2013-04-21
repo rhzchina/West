@@ -13,6 +13,7 @@ public:
 
 	static void setGold(int g){instance->gold = g;}
 	static int getGold(){return instance->gold;}
+	static void addGold(int change){instance->gold += change;}
 
 	static void setSate(int type,int state,int v){instance->itemState[type][state] = v;}
 	static int getState(int type,int state){return instance->itemState[type][state];}

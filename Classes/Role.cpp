@@ -1,14 +1,23 @@
 #include "Role.h"
 #include "tool.h"
+#include "GameData.h"
 
 
 Role::Role(CCLayer* parent)
 {
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("hero_hacker.plist","hero_hacker.png");
+	int index = GameData::getState(CLOTHES,1);
+	char plist[20];
+	char name[20];
+	sprintf(plist,"hero%d.plist",index);
+	sprintf(name,"hero%d.png",index);
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(plist,name);
 	CCSpriteFrame* prepare = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("run_1.png");
 	hero = CCSprite::createWithSpriteFrame(prepare);
 	hero->setPosition(ccp(POSX,POSY));
-	weapon = Weapon::create("weapon/weapon1.png",hero);
+
+	index = GameData::getState(WEAPON,1);
+	sprintf(name,"weapon/weapon%d.png",index);
+	weapon = Weapon::create(name,hero);
 	parent->addChild(this);   //英雄对象也加入管理
 	parent->addChild(weapon);
 	parent->addChild(hero,11);

@@ -5,18 +5,18 @@ GameData* GameData::instance = NULL;
 GameData::GameData(void)
 {
 	level = 1;
-	gold = 2;
+	gold = 99999999;
 	//memset(itemState,0,sizeof(itemState));
 	
-	itemState[0][0] = 1;
-	itemState[1][0] = 2;
-	itemState[2][0] = 3;
-	itemState[3][0] = 4;
+	itemState[0][0] = 0;
+	itemState[1][0] = 0;
+	itemState[2][0] = 0;
+	itemState[3][0] = 0;
 
-	itemState[0][1] = 1;
-	itemState[1][1] = 1;
-	itemState[2][1] = 1;
-	itemState[3][1] = 1;
+	itemState[0][1] = 0;
+	itemState[1][1] = 0;
+	itemState[2][1] = 0;
+	itemState[3][1] = 0;
 }
 
 GameData::~GameData(void)

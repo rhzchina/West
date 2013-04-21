@@ -24,7 +24,6 @@ bool WelcomeScene::init(){
 		bg->setAnchorPoint(ccp(0,0));
 		addChild(bg);
 
-
 		createItems(CLOTHES);
 
 		CCMenu* menu = CCMenu::create();
@@ -67,23 +66,40 @@ bool WelcomeScene::init(){
 		SETANCHPOS(clothes,-450,-100,0,0);
 		clothes->setTag(CLOTHES);
 		menu->addChild(clothes);
+		//商城提示
+		CCSprite* dlg = CCSprite::create("dlg_short.png");
+		SETANCHPOS(dlg,0,0,0,0);
+		addChild(dlg);
+
+		char* s = "欢迎使用商城功能，点击类型按钮切换标签";
+		char* result;
+		CONV(result,s);
+		tipText = CCLabelTTF::create(result,"arial",40);
+		tipText->setDimensions(CCSizeMake(500,100));
+		tipText->setColor(ccc3(0,255,0));
+		tipText->setHorizontalAlignment(kCCTextAlignmentLeft);
+		SETANCHPOS(tipText,200,20,0,0);
+		addChild(tipText);
 
 		//用户数据信息显示
 		CCSprite* gold = CCSprite::createWithSpriteFrameName("gold.png");
-		SETANCHPOS(gold,122,420,0,0);
+		SETANCHPOS(gold,322,420,0,0);
 		addChild(gold);
 
-		CCSprite* god = CCSprite::createWithSpriteFrameName("god.png");
+	/*	CCSprite* god = CCSprite::createWithSpriteFrameName("god.png");
 		SETANCHPOS(god,350,420,0,0);
 		addChild(god);
 
 		CCSprite* star = CCSprite::createWithSpriteFrameName("star.png");
 		SETANCHPOS(star,550,415,0,0);
-		addChild(star);
-
-		goldNum = CCLabelAtlas::create("5508","num/num_green.png",28,40,'0');
-		SETANCHPOS(goldNum,550,415,0,0);
+		addChild(star);*/
+		char account[20];
+		sprintf(account,"%d",GameData::getGold());
+		goldNum = CCLabelAtlas::create(account,"num/num_yellow.png",28,40,'0');
+		SETANCHPOS(goldNum,410,425,0,0);
 		addChild(goldNum);
+
+
 
 
 		success = true;
@@ -118,10 +134,24 @@ void WelcomeScene::btnCallback(CCObject* sender){
 		CCDirector::sharedDirector()->replaceScene(StartScene::scene());
 		break;
 	case -1:
-		GameData::setGold(GameData::getGold() * 2);
-		sprintf(str,"%d",GameData::getGold());
-		goldNum->setString(str);
-		CCLog("buy items");
+		if(temp){
+			if(GameData::getGold() >= temp->getValue()){
+				GameData::addGold(-temp->getValue());
+				sprintf(str,"%d",GameData::getGold());
+				goldNum->setString(str);
+				char* t = "购买成功，点击即可使用，谢谢";
+				char* re;
+				CONV(re,t);
+				tipText->setString(re);
+				GameData::setSate(temp->getType(),0,temp->getId());
+				createItems(temp->getType(),scroll->getContentOffset().x);
+			}else{
+				char* t = "对不起您的元宝不足，无法够买";
+				char* re;
+				CONV(re,t);
+				tipText->setString(re);
+			}
+		}
 		break;
 	case WEAPON:
 		createItems(WEAPON);
@@ -166,11 +196,12 @@ void WelcomeScene::createItems(int type,float offset){
 		switch(type){
 		case WEAPON:
 			max = 7;
-			sprintf(name,"weapon/weapon%d.png",count);
+			sprintf(name,"weapon/weapon%d.png",count - 1);
 			value = 1000 * count;
 			break;
 		case TREASURE:
 			max = 1;
+			return;
 			break;
 		case TIP:
 			max = 3;
@@ -248,6 +279,13 @@ void WelcomeScene::ccTouchesEnded(CCSet* touches,CCEvent* event){
 				if(item->getId() == touchId){
 					if(item->touchAction() == 0){
 						createItems(item->getType(),scroll->getContentOffset().x);
+					}else{
+						temp = item;
+						char s[100];
+						sprintf(s,"购买物品需要%d元宝，点击右侧的买入按钮即可购买",item->getValue());
+						char* result;
+						CONV(result,s);
+						tipText->setString(result);
 					}
 				}
 				break;

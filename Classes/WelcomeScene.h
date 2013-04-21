@@ -29,6 +29,8 @@ private:
 	CCArray* itemsArray;
 	int touchId;
 	CCPoint lastPt;
+	CCLabelTTF* tipText;
+	ShopItem* temp;
 };
 
 #endif
