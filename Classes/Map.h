@@ -21,12 +21,17 @@ public:
 	void createData(int);
 	void resetMap(int,GameScene*);
 	int getLevel(){return curLevel;}
+	float getPercent(){return curDis / distance > 0.95 ? 0.95 : curDis / distance;}
 private:
 	CCArray* map;
 	vector<int> mapData;
 	bool mapUp;
 	float speed; 
 	int curLevel;
+	float distance;  //地图总长
+	float curDis;   //当前
+	bool countDistance;  //开始计算总长
+	bool startCur;  //开始计算当前
 };
 
 #endif

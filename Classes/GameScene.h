@@ -18,19 +18,25 @@ public:
 	void ccTouchesMoved(CCSet*,CCEvent*);
 	void ccTouchesEnded(CCSet*,CCEvent*);
 
+	void btnCallback(CCObject*);
+	void showPauseLayer(bool);
 	void addSpeed(float add){speed += add;}
+	void setProgress(float percent){progressLeaf->setPositionX(progressBg->getPositionX() + percent *  progressBg->getContentSize().width) ;}
 	static CCScene* scene();
 	CREATE_FUNC(GameScene);
 private:
 	CCSprite* scrollBg;
 	CCSprite* scrollBg1;
 	CCSprite* sky;
+	CCSprite* progressBg;
+	CCSprite* progressLeaf;
 	Map* map;
 	Role* hero;
 	float bgX;
 	float speed;
-	CCLabelTTF* overText;
+	CCLayer* pauseLayer;
 	CCLayer* items;
+	CCLabelTTF* overText;
 	CCLabelAtlas* scoreValue;
 	CCLabelAtlas* distanceValue;
 	CCLabelAtlas* bestValue;

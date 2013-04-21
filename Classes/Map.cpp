@@ -20,6 +20,10 @@ Map::~Map(void)
 
 void Map::resetMap(int level,GameScene* parent){
 	curLevel = level;
+	distance = 0;
+	countDistance = false;
+	startCur = false;
+	curDis = 0;
 	map = NULL;
 	mapUp = false;
 	if(&mapData == NULL){
@@ -39,6 +43,7 @@ void Map::createData(int level){
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
+		startCur = true;
 	}else if(level == 2){
 		int array[] =  {0,0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 5, 0, 5, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3,
 			0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0,7,8,9 };
@@ -103,6 +108,7 @@ void Map::initMap(int level){
 		map->retain();
 		for(int i = 0;i <mapData.size();i++){
 			if(mapData.at(i)!=0){    //陆地
+				countDistance = true;  //第一个不是0的位置起开始计算总长
 				char buf[30];
 				sprintf(buf,"land%d/land%d.png",level,mapData[i]);
 				CCSprite* land = CCSprite::create(buf);
@@ -112,10 +118,12 @@ void Map::initMap(int level){
 					land->setPosition(ccp(x,y));
 
 				}else{  
+
 					CCSprite* startLand = NULL;
 					if(map->count() >= 1){
 						startLand = (CCSprite*)map->objectAtIndex(0);
 					}
+					
 
 					if(mapData.at(i)==7){
 						y = -(land->getContentSize().height - startLand->getContentSize().height + 55);
@@ -133,12 +141,18 @@ void Map::initMap(int level){
 					}
 					land->setPosition(ccp(x,y));
 					x += land->getContentSize().width;
+					distance += land->getContentSize().width;
 				}
 				map->addObject(land);
 			}else{   //空地
 				x += 140;
+				if(countDistance){
+					distance += 140;
+				}
 			}
 		}
+		
+
 }
 
 void Map::addMap(GameScene* layer){
@@ -192,6 +206,7 @@ void Map::mapMove(GameScene* parent,Role* role){
 					role->nextLevel();
 					speed += 0.5;  //每一关增加0.5速 度
 					parent->addSpeed(0.5);
+					startCur = true;
 				}
 			}
 		}
@@ -243,6 +258,7 @@ void Map::mapMove(GameScene* parent,Role* role){
 				m->setVisible(true);
 				if(m->getTag() == 9 && m->getPositionX() + m->getContentSize().width < Role::POSX){
 					role->fly(true);
+					startCur = false;
 				}
 			}
 		}else{
@@ -255,4 +271,8 @@ void Map::mapMove(GameScene* parent,Role* role){
 		resetMap(curLevel + 1,parent);
 	}
 
+	if(startCur){
+		parent->setProgress(getPercent());
+		curDis += speed;
+	}
 }

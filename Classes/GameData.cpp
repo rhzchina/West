@@ -9,6 +9,7 @@ GameData::GameData(void)
 	score = 0;
 	distance = 0;
 	best = 0;
+	loopCount = 0;
 	//memset(itemState,0,sizeof(itemState));
 	
 	itemState[0][0] = 0;
@@ -52,8 +53,9 @@ void GameData::reset(bool all){
 	if(all){
 		instance->best = 0;
 	}else{
-		instance->best = instance->distance;		
+		instance->best = instance->best > instance->distance ? instance->best : instance->distance;		
 	}
+	instance->loopCount = 0;
 	instance->score = 0;
 	instance->distance = 0;
 	
