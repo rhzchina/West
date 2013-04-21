@@ -93,7 +93,7 @@ void Role::weaponDone(int speed,float frameTime){
 void Role::fall(){
 	if(!protecting && state != FALL){
 		state = FALL;
-		hero->runAction(CCSequence::create(CCMoveTo::create(0.2,ccp(hero->getPositionX(),0)),CCCallFunc::create(this,callfunc_selector(Role::actionCallback)),NULL));
+		hero->runAction(CCSequence::create(CCMoveTo::create(0.2f,ccp(hero->getPositionX(),0)),CCCallFunc::create(this,callfunc_selector(Role::actionCallback)),NULL));
 	}
 }
 
@@ -147,7 +147,7 @@ void Role::changeState(int s){
 		frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(buf);
 		frames->addObject(frame);
 	}
-	CCAnimate* ani = CCAnimate::create(CCAnimation::createWithSpriteFrames(frames,0.1));
+	CCAnimate* ani = CCAnimate::create(CCAnimation::createWithSpriteFrames(frames,0.1f));
 	hero->runAction(CCRepeatForever::create(ani));
 }
 

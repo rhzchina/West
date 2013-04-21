@@ -1,4 +1,4 @@
-#include "GameData.h"
+                                                                                                         #include "GameData.h"
 
 GameData* GameData::instance = NULL;
 
@@ -6,6 +6,17 @@ GameData::GameData(void)
 {
 	level = 1;
 	gold = 2;
+	//memset(itemState,0,sizeof(itemState));
+	
+	itemState[0][0] = 1;
+	itemState[1][0] = 2;
+	itemState[2][0] = 3;
+	itemState[3][0] = 4;
+
+	itemState[0][1] = 1;
+	itemState[1][1] = 1;
+	itemState[2][1] = 1;
+	itemState[3][1] = 1;
 }
 
 GameData::~GameData(void)
@@ -34,3 +45,4 @@ int GameData::getLevel(){
 	return instance->level;
 }
 
+                                                                                                                                                                                                                                                                                                                                                                                                                

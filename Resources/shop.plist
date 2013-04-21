@@ -121,6 +121,19 @@
                 <key>sourceSize</key>
                 <string>{151,68}</string>
             </dict>
+            <key>use.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{204,420},{43,42}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{2,1},{43,42}}</string>
+                <key>sourceSize</key>
+                <string>{47,44}</string>
+            </dict>
             <key>weapon.png</key>
             <dict>
                 <key>frame</key>
@@ -144,7 +157,7 @@
             <key>size</key>
             <string>{256,510}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:3f3c6c1cba2a5e4dd326ccd1bf89626f$</string>
+            <string>$TexturePacker:SmartUpdate:6d37164a86ed99f9f272e2419d34f988$</string>
             <key>textureFileName</key>
             <string>shop.png</string>
         </dict>
