@@ -71,10 +71,7 @@ bool WelcomeScene::init(){
 		SETANCHPOS(dlg,0,0,0,0);
 		addChild(dlg);
 
-		char* s = "欢迎使用商城功能，点击类型按钮切换标签";
-		char* result;
-		CONV(result,s);
-		tipText = CCLabelTTF::create(result,"arial",40);
+		tipText = CCLabelTTF::create(conv("欢迎使用商城功能，点击类型按钮切换标签"),"arial",40);
 		tipText->setDimensions(CCSizeMake(500,100));
 		tipText->setColor(ccc3(0,255,0));
 		tipText->setHorizontalAlignment(kCCTextAlignmentLeft);
@@ -98,10 +95,6 @@ bool WelcomeScene::init(){
 		goldNum = CCLabelAtlas::create(account,"num/num_yellow.png",28,40,'0');
 		SETANCHPOS(goldNum,410,425,0,0);
 		addChild(goldNum);
-
-
-
-
 		success = true;
 	}while(0);
 
@@ -139,17 +132,11 @@ void WelcomeScene::btnCallback(CCObject* sender){
 				GameData::addGold(-temp->getValue());
 				sprintf(str,"%d",GameData::getGold());
 				goldNum->setString(str);
-				char* t = "购买成功，点击即可使用，谢谢";
-				char* re;
-				CONV(re,t);
-				tipText->setString(re);
+				tipText->setString(conv("购买成功，点击即可使用，谢谢"));
 				GameData::setSate(temp->getType(),0,temp->getId());
 				createItems(temp->getType(),scroll->getContentOffset().x);
 			}else{
-				char* t = "对不起您的元宝不足，无法够买";
-				char* re;
-				CONV(re,t);
-				tipText->setString(re);
+				tipText->setString(conv( "对不起您的元宝不足，无法够买"));
 			}
 		}
 		break;
@@ -281,11 +268,9 @@ void WelcomeScene::ccTouchesEnded(CCSet* touches,CCEvent* event){
 						createItems(item->getType(),scroll->getContentOffset().x);
 					}else{
 						temp = item;
-						char s[100];
-						sprintf(s,"购买物品需要%d元宝，点击右侧的买入按钮即可购买",item->getValue());
-						char* result;
-						CONV(result,s);
-						tipText->setString(result);
+						char t[50];
+						sprintf(t,"购买物品需要%d元宝，点击右侧的买入按钮即可购买",item->getValue());
+						tipText->setString(conv(t));
 					}
 				}
 				break;
