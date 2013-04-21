@@ -10,7 +10,7 @@ Map::Map(int level,GameScene* parent)
 	createData(level);
 	initMap(1);
 	curLevel = 1;*/
-	speed = 5.1;
+	speed = 5.1f;
 	resetMap(level,parent);
 }
 

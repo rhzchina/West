@@ -131,6 +131,7 @@ void SelectScene::ccTouchesEnded(CCSet* touches,CCEvent* event){
 	int num = touchedLevel(location);
 	if (num != -1 && num == touched){
 		GameData::setLevel(num);
+		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFrames();
 		CCDirector::sharedDirector()->replaceScene(GameScene::scene());
 	}else{
 		touched = -1;

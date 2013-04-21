@@ -47,6 +47,37 @@ bool GameScene::init(){
 		map = new Map(1,this);
 		//Éú³ÉÖ÷½Ç
 		hero = new Role(this);
+
+		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("game.plist","game.png");
+
+		CCSprite* scorePeach = CCSprite::createWithSpriteFrameName("score_peach.png");
+		SETANCHPOS(scorePeach,600,420,0,0);
+		addChild(scorePeach);
+
+
+		CCSprite* distance = CCSprite::createWithSpriteFrameName("distance.png");
+		SETANCHPOS(distance,0,430,0,0);
+		addChild(distance);
+
+
+		CCSprite* best = CCSprite::createWithSpriteFrameName("best.png");
+		SETANCHPOS(best,20,390,0,0);
+		addChild(best);
+
+		scoreValue = CCLabelAtlas::create("0","num/num_green.png",28,40,'0');
+		SETANCHPOS(scoreValue,680,420,0,0);
+		addChild(scoreValue);
+
+		distanceValue = CCLabelAtlas::create("0","num/num_yellow.png",28,40,'0');
+		SETANCHPOS(distanceValue,170,430,0,0);
+		addChild(distanceValue);
+
+		char b[20];
+		sprintf(b,"%d",GameData::getBest());
+		bestValue = CCLabelAtlas::create(b,"num/num_red.png",28,40,'0');
+		SETANCHPOS(bestValue,140,390,0,0);
+		addChild(bestValue);
+		
 		schedule(schedule_selector(GameScene::bgMove));
 		bRet = true;
 	}while(0);
@@ -65,6 +96,7 @@ void GameScene::ccTouchesBegan(CCSet* touches,CCEvent* event){
 	CCPoint location = CCDirector::sharedDirector()->convertToGL(touch->getLocationInView());
 	hero->jump();
 	if(hero->isDie()){
+		GameData::reset(false);
 		CCDirector::sharedDirector()->replaceScene(StartScene::scene());
 	}
 }
@@ -78,12 +110,14 @@ void GameScene::ccTouchesEnded(CCSet* touches,CCEvent* event){
 }
 
 void GameScene::bgMove(float dt){
-	//bgX -= speed;
-	//if(bgX <= -scrollBg->getContentSize().width){
-	//	bgX = 0;
-	//}
-	//scrollBg->setPositionX(bgX)	;
-	//scrollBg1->setPositionX(bgX+scrollBg->getContentSize().width);
+	GameData::addDistance(speed * 2);
+	GameData::addScore(speed * 5);
+	char v[20];
+	sprintf(v,"%d",GameData::getDistance());
+	distanceValue->setString(v);
+	sprintf(v,"%d",GameData::getScore());
+	scoreValue->setString(v);
+
 	map->mapMove(this,hero);
 	if(hero->getSprite()->getPositionY() < 130){
 		if(map->onLand(hero->getSprite())){

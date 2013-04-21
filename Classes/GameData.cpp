@@ -6,6 +6,9 @@ GameData::GameData(void)
 {
 	level = 1;
 	gold = 99999999;
+	score = 0;
+	distance = 0;
+	best = 0;
 	//memset(itemState,0,sizeof(itemState));
 	
 	itemState[0][0] = 0;
@@ -45,4 +48,14 @@ int GameData::getLevel(){
 	return instance->level;
 }
 
+void GameData::reset(bool all){
+	if(all){
+		instance->best = 0;
+	}else{
+		instance->best = instance->distance;		
+	}
+	instance->score = 0;
+	instance->distance = 0;
+	
+}
                                                                                                                                                                                                                                                                                                                                                                                                                 

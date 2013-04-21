@@ -30,18 +30,16 @@ ShopItem::ShopItem(int x,int y,const char* name,int v,int type, int id)
 		SETANCHPOS(valueText,bg->getContentSize().width / 2,20,0.5,0);
 		layer->addChild(valueText);
 	}else{  //此物品已购买
-		char* str = "已购买";
+		char* str = conv("购买");
 		ccColor3B color = ccc3(255,0,0);
 		if(GameData::getState(type,1) == id){ // 物品正在使用
 			CCSprite* use = CCSprite::createWithSpriteFrameName("use.png");
 			SETANCHPOS(use,bg->getContentSize().width / 2, bg->getContentSize().height / 2,0.5,0);
 			layer->addChild(use);
-			str = "已使用";
+			str = conv("已使用");
 			color = ccc3(0,255,0);
 		}
-		char* result;
-		CONV(result,str);
-		CCLabelTTF* text = CCLabelTTF::create(result,"Arial",30);
+		CCLabelTTF* text = CCLabelTTF::create(str,"Arial",30);
 		text->setColor(color);
 		SETANCHPOS(text,bg->getContentSize().width / 2 ,25,0.5,0);
 		layer->addChild(text);

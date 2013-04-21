@@ -31,5 +31,8 @@ private:
 	float speed;
 	CCLabelTTF* overText;
 	CCLayer* items;
+	CCLabelAtlas* scoreValue;
+	CCLabelAtlas* distanceValue;
+	CCLabelAtlas* bestValue;
 };
 #endif
