@@ -11,6 +11,12 @@ GameData::GameData(void)
 	best = 0;
 	loopCount = 0;
 	//memset(itemState,0,sizeof(itemState));
+	for(int i = 0;i < 4;i++){
+		data[i] = vector<int>();
+		for(int j = 0;j < 2;j++){
+			data[i].push_back(0);  //初始化，index = 0为当前持有，index = 1,值为0，是默认拥有第一个
+		}
+	}
 	
 	itemState[0][0] = 0;
 	itemState[1][0] = 0;
@@ -60,4 +66,12 @@ void GameData::reset(bool all){
 	instance->distance = 0;
 	
 }
-                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                              
+bool GameData::bought(int type,int id){
+	for(int i = 1;i < instance->data[type].size();i++){
+		if(instance->data[type].at(i) == id){
+			return true;
+		}
+	}
+	return false;
+}

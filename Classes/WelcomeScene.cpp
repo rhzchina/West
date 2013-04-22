@@ -133,7 +133,7 @@ void WelcomeScene::btnCallback(CCObject* sender){
 				sprintf(str,"%d",GameData::getGold());
 				goldNum->setString(str);
 				tipText->setString(conv("购买成功，点击即可使用，谢谢"));
-				GameData::setSate(temp->getType(),0,temp->getId());
+				GameData::addSate(temp->getType(),0,temp->getId());
 				createItems(temp->getType(),scroll->getContentOffset().x);
 			}else{
 				tipText->setString(conv( "对不起您的元宝不足，无法够买"));

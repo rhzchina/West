@@ -5,7 +5,7 @@
 
 Role::Role(CCLayer* parent)
 {
-	int index = GameData::getState(CLOTHES,1);
+	int index = GameData::getState(CLOTHES).at(0);
 	char plist[20];
 	char name[20];
 	sprintf(plist,"hero%d.plist",index);
@@ -15,7 +15,7 @@ Role::Role(CCLayer* parent)
 	hero = CCSprite::createWithSpriteFrame(prepare);
 	hero->setPosition(ccp(POSX,POSY));
 
-	index = GameData::getState(WEAPON,1);
+	index = GameData::getState(WEAPON).at(0);
 	sprintf(name,"weapon/weapon%d.png",index);
 	weapon = Weapon::create(name,hero);
 	parent->addChild(this);   //英雄对象也加入管理
