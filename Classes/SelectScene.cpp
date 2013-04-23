@@ -86,6 +86,15 @@ bool SelectScene::init(){
 		SETANCHPOS(desBg,425,0,0.5,0);
 		addChild(desBg);
 
+		CCSprite* next = CCSprite::createWithSpriteFrameName("next.png");
+		SETANCHPOS(next,854,300,1,0.5);
+		addChild(next);
+
+		CCSprite* prev = CCSprite::createWithSpriteFrameName("next.png");
+		SETANCHPOS(prev,0,300,0,0.5);
+		prev->setFlipX(true);
+		addChild(prev);
+
 		success = true;
 	}while(0);
 	return success;
