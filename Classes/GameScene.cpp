@@ -8,6 +8,7 @@ GameScene::GameScene(void)
 	scrollBg = NULL;
 	bgX = 0;
 	speed = 0.5;
+	speedChange = 0;
 	map = NULL;
 	hero = NULL;
 	overText = NULL;
@@ -127,16 +128,17 @@ void GameScene::ccTouchesMoved(CCSet* touches,CCEvent* event){
 }
 
 void GameScene::ccTouchesEnded(CCSet* touches,CCEvent* event){
-	if(CCDirector::sharedDirector()->isPaused()){
-		hero->hold();
-	}
+	/*if(!CCDirector::sharedDirector()->isPaused()){
+	hero->hold();
+	}*/
 }
 
 void GameScene::bgMove(float dt){
+	//游戏数据存储，根据移动的速度计算得分和距离
 	GameData::addLoop();
 	if(GameData::getLoop() % 5 == 0){
-		GameData::addDistance(speed * 2);
-		GameData::addScore(speed * 5);
+		GameData::addDistance(getSpeed() * 2);
+		GameData::addScore(getSpeed() * 5);
 	}
 	char v[20];
 	sprintf(v,"%d",GameData::getDistance());
@@ -144,35 +146,44 @@ void GameScene::bgMove(float dt){
 	sprintf(v,"%d",GameData::getScore());
 	scoreValue->setString(v);
 
+	//地图移动
 	map->mapMove(this,hero);
-	if(hero->getSprite()->getPositionY() < 130){
-		if(map->onLand(hero->getSprite())){
-			if(hero->getState() != Role::FALL && hero->getState() != Role::ATTACK){
-				hero->changeState(Role::NORMAL);
-			}else if(hero->getState() == Role::ATTACK){
-				hero->hold();
+	if(hero->getState() != Role::ATTACK){
+		map->clearChange();
+		clearChange();
+		if(hero->getSprite()->getPositionY() < 130){
+			if(map->onLand(hero->getSprite())){
+				if(hero->getState() != Role::FALL && hero->getState() != Role::ATTACK){
+					hero->changeState(Role::NORMAL);
+				}else if(hero->getState() == Role::ATTACK){
+					hero->hold();
+				}
+			}else{
+				if(hero->getState() != Role::ATTACK && hero->getState() != Role::HOLD)
+					hero->fall();
 			}
-		}else{
-			if(hero->getState() != Role::ATTACK && hero->getState() != Role::HOLD)
+		}else if(hero->getSprite()->getPositionY() == 130){
+			if(!map->onLand(hero->getSprite())) {
 				hero->fall();
+			}
 		}
-	}else if(hero->getSprite()->getPositionY() == 130){
-		if(!map->onLand(hero->getSprite())) {
-			hero->fall();
-		}
+	}else{
+		map->tempChange(SPEEDUP);
+		tempChange(SPEEDUP);
 	}
 
+	//武器是否否使用
 	if(map->weaponOn(hero)){
-		hero->weaponDone(map->getSpeed(),dt);
+		hero->weaponDone(map,dt);
 	}
 
 	if(hero->isDie()){
 		unschedule(schedule_selector(GameScene::bgMove));
 		overText->setVisible(true);
 	}
-
+	
 	if(items->getPositionX() > -items->getContentSize().width){
-		items->setPositionX(items->getPositionX() - speed / 2);
+		items->setPositionX(items->getPositionX() - getSpeed() / 2);
 	}else{
 		srand(time(0));
 		if(rand() % 10 == 5){

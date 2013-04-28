@@ -8,6 +8,7 @@ USING_NS_CC;
 class GameScene : public CCLayer 
 {
 public:
+	static const int SPEEDUP = 4;  //速度的临时改变量 
 	GameScene(void);
 	~GameScene(void);
 
@@ -21,6 +22,9 @@ public:
 	void btnCallback(CCObject*);
 	void showPauseLayer(bool);
 	void addSpeed(float add){speed += add;}
+	void tempChange(float temp){speedChange = temp;} //速度的临时改变量
+	void clearChange(){speedChange = 0;}
+	float getSpeed(){return speed + speedChange;}
 	void setProgress(float percent){progressLeaf->setPositionX(progressBg->getPositionX() + percent *  progressBg->getContentSize().width) ;}
 	static CCScene* scene();
 	CREATE_FUNC(GameScene);
@@ -34,6 +38,7 @@ private:
 	Role* hero;
 	float bgX;
 	float speed;
+	float speedChange; 
 	CCLayer* pauseLayer;
 	CCLayer* items;
 	CCLabelTTF* overText;

@@ -17,7 +17,9 @@ public:
 	void mapMove(GameScene*,Role* );
 	bool onLand(CCSprite*);
 	bool weaponOn(Role*);
-	int getSpeed(){return speed;}
+	int getSpeed(){return speed + speedChange;}
+	void tempChange(float change){speedChange = change;}
+	void clearChange(){speedChange = 0;}
 	void createData(int);
 	void resetMap(int,GameScene*);
 	int getLevel(){return curLevel;}
@@ -27,6 +29,7 @@ private:
 	vector<int> mapData;
 	bool mapUp;
 	float speed; 
+	float speedChange;
 	int curLevel;
 	float distance;  //地图总长
 	float curDis;   //当前

@@ -2,8 +2,8 @@
 #define WEAPON_H
 #include "cocos2d.h"
 
-
 USING_NS_CC;
+class Map;
 class Weapon : public CCSprite
 {
 
@@ -16,12 +16,12 @@ public:
 	void draw();
 	void reset();
 	void actionCallback();
-	void done(){shootDone = true;}
+	void done(Map* m){shootDone = true;map = m;}
 	bool isShootDone(){return shootDone;}
 private:
-
 	CCSprite* owner;
 	bool shootDone;  //击中浮石
+	Map* map;  //地图的引用，用来取当前地图速度
 
 };
 #endif

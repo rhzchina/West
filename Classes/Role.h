@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "Weapon.h"
 USING_NS_CC;
+class Map;
 class Role : public CCNode 
 {
 public:
@@ -25,12 +26,14 @@ public:
 	CCSprite* getSprite(){return hero;}
 	void jump();
 	void hold();
+	void swing();
 	void actionCallback();
+	void midCallback();
 	void fall();
 	void fly(bool);
 	void resetWeapon();
 	CCRect getWeaponRange();
-	void weaponDone(int,float);  //ÎäÆ÷»÷ÖÐ
+	void weaponDone(Map*,float);  //ÎäÆ÷»÷ÖÐ
 	void setProtect(bool);
 	bool isProtected(){return protecting;}
 	void nextLevel();

@@ -1,14 +1,15 @@
 #include "Weapon.h"
 #include "tool.h"
-
+#include "Map.h"
 Weapon::Weapon(void)
 {
-
+	map = NULL;
 }
 
 
 Weapon::~Weapon(void)
 {
+	map = NULL;
 }
 
 void Weapon::actionCallback(){
@@ -26,6 +27,7 @@ void Weapon::shoot(){
 
 void Weapon::reset(){
 	shootDone = false;
+	map = NULL;
 	stopAllActions(); 
 	setVisible(false);
 }
@@ -50,4 +52,7 @@ void Weapon::draw(){
 		owner->getPositionY() + owner->getContentSize().height / 2 - getPositionY() - getContentSize().height / 2 - 10)
 		,ccp(getContentSize().width / 2,getContentSize().height / 2));
 	CCSprite::draw();
+	if(shootDone){
+		this->setPositionX(getPositionX() - map->getSpeed());
+	}
 }

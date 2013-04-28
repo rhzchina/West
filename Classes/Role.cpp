@@ -1,7 +1,7 @@
 #include "Role.h"
 #include "tool.h"
 #include "GameData.h"
-
+#include "Map.h"
 
 Role::Role(CCLayer* parent)
 {
@@ -63,8 +63,10 @@ void Role::hold(){
 		hero->setPositionY(hero->getPositionY() + 10);
 		changeState(HOLD);
 		int height = 350  - hero->getPositionY() > 0 ? 350 - hero->getPositionY() : 0;
-		float time = height / 200.0f; 
-		hero->runAction(CCSequence::create(CCJumpTo::create(time < 0.5 ? 0.5 : time,ccp(hero->getPositionX(),0),height,1),
+		//float time = height / 200.0f; 
+		float time = POINT_INSTANCE(ccp(POSX,POSY),ccp(hero->getPositionX(),hero->getPositionY())) / 430.0f;
+		hero->runAction(CCSequence::create(
+			CCJumpTo::create(time < 0.5 ? 0.5 : time,ccp(POSX,0),height,1),
 			CCCallFunc::create(this,callfunc_selector(Role::actionCallback))
 			,NULL));
 	}
@@ -80,7 +82,7 @@ void Role::actionCallback(){
 			CCLog("GAME Over");
 		}
 		changeState(NORMAL);
-	}else if(state == ATTACK ){
+	}else if(state == ATTACK){
 		hold();
 	}else if(state == HOLD){
 		changeState(NORMAL);
@@ -92,11 +94,19 @@ void Role::actionCallback(){
 	}
 }
 
-void Role::weaponDone(int speed,float frameTime){
+void Role::midCallback(){
+	if(state == ATTACK){
+	
+	}
+}
+
+//当武器射出状态有效，改变状态
+void Role::weaponDone(Map* map,float frameTime){
 	state = ATTACK;
 	weapon->stopAllActions();
-	float time = POINT_INSTANCE(ccp(0,weapon->getPositionY()),ccp(weapon->getPositionX(),weapon->getPositionY())) / (speed / frameTime); 
-	weapon->runAction(CCMoveTo::create(time,ccp(0,weapon->getPositionY())));
+	hero->stopAllActions();
+	weapon->done(map);
+	swing();
 }
 
 void Role::fall(){
@@ -105,6 +115,24 @@ void Role::fall(){
 		hero->runAction(CCSequence::create(CCMoveTo::create(0.2f,ccp(hero->getPositionX(),0)),CCCallFunc::create(this,callfunc_selector(Role::actionCallback)),NULL));
 	}
 }
+
+//荡秋千的效果
+void Role::swing(){
+	ccBezierConfig config;
+	float sx = hero->getPositionX();
+	float sy = hero->getPositionY();
+	float ex = hero->getPositionX() + 150;
+	float ey = hero->getPositionY() + 150;
+
+	config.controlPoint_1 = ccp(sx,sy);
+	config.controlPoint_2 = ccp(sx + (ex - sx) * 0.5, sy + (ey - sy) * 0.5 - 300);
+	config.endPosition = ccp(ex,ey);
+	hero->runAction(CCSequence::create(
+		CCMoveTo::create(0.1,ccp(sx - 50,sy + 10)),
+		CCEaseSineOut::create(CCBezierTo::create(0.5,config)),
+		CCCallFunc::create(this,callfunc_selector(Role::actionCallback)),NULL));
+}
+
 
 //over参数指定是否是一关结束的飞行
 void Role::fly(bool over){

@@ -266,9 +266,11 @@ void WelcomeScene::ccTouchesEnded(CCSet* touches,CCEvent* event){
 				if(item->getId() == touchId){
 					if(item->touchAction() == 0){
 						createItems(item->getType(),scroll->getContentOffset().x);
+
 					}else{
 						temp = item;
-						char t[50];
+						char t[100];
+
 						sprintf(t,"购买物品需要%d元宝，点击右侧的买入按钮即可购买",item->getValue());
 						tipText->setString(conv(t));
 					}

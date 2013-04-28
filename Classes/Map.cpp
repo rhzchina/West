@@ -11,6 +11,7 @@ Map::Map(int level,GameScene* parent)
 	initMap(1);
 	curLevel = 1;*/
 	speed = 5.1f;
+	speedChange = 0;
 	resetMap(level,parent);
 }
 
@@ -222,28 +223,28 @@ void Map::mapMove(GameScene* parent,Role* role){
 					switch(m->getTag()){
 					case 7:
 						if(y<-55){
-							y+=speed / 2.0f;
+							y+=getSpeed() / 2.0f;
 						}
 						break;
 					case 8:
 						if(y < -75){
-							y+=speed / 2.0f;
+							y+=getSpeed() / 2.0f;
 						}
 						break;
 					case 9:
 						if(y < -70){
-							y+=speed / 2.0f;
+							y+=getSpeed() / 2.0f;
 						}
 						break;
 					}
 				}else{
 					if( y < 0){
-						y += speed;
+						y += getSpeed();
 					}
 				}
-				x -= speed / 1.5f;
+				x -= getSpeed() / 1.5f;
 			}else{
-				x-=speed;
+				x-=getSpeed();
 			}
 			//一关结束的地图向上移动
 			if(!mapUp && i >= map->count() - 3){
@@ -273,6 +274,6 @@ void Map::mapMove(GameScene* parent,Role* role){
 
 	if(startCur){
 		parent->setProgress(getPercent());
-		curDis += speed;
+		curDis += getSpeed();
 	}
 }
