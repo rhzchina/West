@@ -17,16 +17,6 @@ GameData::GameData(void)
 			data[i].push_back(0);  //初始化，index = 0为当前持有，index = 1,值为0，是默认拥有第一个
 		}
 	}
-	
-	itemState[0][0] = 0;
-	itemState[1][0] = 0;
-	itemState[2][0] = 0;
-	itemState[3][0] = 0;
-
-	itemState[0][1] = 0;
-	itemState[1][1] = 0;
-	itemState[2][1] = 0;
-	itemState[3][1] = 0;
 }
 
 GameData::~GameData(void)

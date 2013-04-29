@@ -89,6 +89,7 @@ bool GameScene::init(){
 
 		CCMenu* menu = CCMenu::create();
 		SETANCHPOS(menu,20,0,0,0);
+		menu->setTag(99);
 		addChild(menu,12);
 
 		CCMenuItemSprite* pause = CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("pause.png"),
@@ -116,10 +117,7 @@ void GameScene::ccTouchesBegan(CCSet* touches,CCEvent* event){
 		CCTouch* touch = (CCTouch*)touches->anyObject();
 		CCPoint location = CCDirector::sharedDirector()->convertToGL(touch->getLocationInView());
 		hero->jump();
-		if(hero->isDie()){
-			GameData::reset(false);
-			CCDirector::sharedDirector()->replaceScene(StartScene::scene());
-		}
+		
 	}
 }
 
@@ -178,8 +176,7 @@ void GameScene::bgMove(float dt){
 	}
 
 	if(hero->isDie()){
-		unschedule(schedule_selector(GameScene::bgMove));
-		overText->setVisible(true);
+		gameOver();
 	}
 	
 	if(items->getPositionX() > -items->getContentSize().width){
@@ -205,11 +202,11 @@ void GameScene::initBgItems(int level){
 	items = CCLayer::create();
 	int x = 0;
 	switch(level){
-	case 3:
-		break;
-	case 4:
-		break;
 	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
 		items->setContentSize(CCSizeMake(1380,480));
 		//水晶宫
 		name.replace(name.begin(),name.end(),dir);
@@ -254,7 +251,7 @@ void GameScene::initBgItems(int level){
 			x += space * (rand() % 3 + 2);
 		}
 		break;
-	case 2:
+	case 4:
 		//石人碉像
 		name.replace(name.begin(),name.end(),dir);
 		temp = CCSprite::create(name.append("stone.png").c_str());
@@ -293,13 +290,13 @@ void GameScene::btnCallback(CCObject* sender){
 		showPauseLayer(false);
 		CCDirector::sharedDirector()->resume();
 		break;
-	case 3:
+	case 3: //重试
 		GameData::reset(false);
 		CCDirector::sharedDirector()->resume();
 		CCDirector::sharedDirector()->replaceScene(GameScene::scene());
 		break;
 	case 4:
-		GameData::reset(false);
+		GameData::reset(false); //返回
 		CCDirector::sharedDirector()->resume();
 		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFrames();
 		CCDirector::sharedDirector()->replaceScene(SelectScene::scene());
@@ -312,6 +309,53 @@ void GameScene::btnCallback(CCObject* sender){
 		break;
 	}
 }
+void GameScene::gameOver(){
+	removeChild(getChildByTag(99),true);
+	unschedule(schedule_selector(GameScene::bgMove));
+	CCLayerColor* ol = CCLayerColor::create(ccc4(0,0,0,150));
+	addChild(ol,20);
+
+	CCSprite* overBg = CCSprite::create("over_bg.png");
+	SETANCHPOS(overBg,425,240,0.5,0.5);
+	addChild(overBg,21);
+
+	CCMenu* menu = CCMenu::create();
+	SETANCHPOS(menu,425,240,0.5,0.5);
+	addChild(menu,21);
+
+	CCMenuItemSprite* retry = CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("retry.png"),
+		CCSprite::createWithSpriteFrameName("retry.png"),this,menu_selector(GameScene::btnCallback));
+	SETANCHPOS(retry,-180,-110,0,0);
+	retry->setTag(3);
+	menu->addChild(retry);
+
+	CCMenuItemSprite* play = CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("play.png"),
+		CCSprite::createWithSpriteFrameName("play.png"),this,menu_selector(GameScene::btnCallback));
+	SETANCHPOS(play,80,-110,0,0);
+	play->setTag(4);
+	menu->addChild(play);
+
+	CCSprite* dis = CCSprite::createWithSpriteFrameName("distance.png");
+	SETANCHPOS(dis,350,300,0.5,0.5);
+	addChild(dis,21);
+
+	char v[20];
+	sprintf(v,"%d",GameData::getDistance());
+	CCLabelAtlas* disText =CCLabelAtlas::create(v,"num/num_yellow.png",28,40,'0');
+	SETANCHPOS(disText,430,280,0,0);
+	addChild(disText,21);
+
+	CCSprite* best = CCSprite::createWithSpriteFrameName("best.png");
+	SETANCHPOS(best,350,250,0.5,0.5);
+	addChild(best,21);
+
+	sprintf(v,"%d",GameData::getBest() > GameData::getDistance() ? GameData::getBest() : GameData::getDistance());
+	CCLabelAtlas* bestText =CCLabelAtlas::create(v,"num/num_red.png",28,40,'0');
+	SETANCHPOS(bestText,410,230,0,0);
+	addChild(bestText,21);
+
+}
+
 
 void GameScene::showPauseLayer(bool show){
 	if(show){

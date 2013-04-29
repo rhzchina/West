@@ -7,6 +7,7 @@ WelcomeScene::WelcomeScene(void)
 {
 	itemsLayer = NULL;
 	itemsArray = NULL;
+	temp = NULL;
 }
 
 
@@ -153,6 +154,7 @@ void WelcomeScene::btnCallback(CCObject* sender){
 		createItems(CLOTHES);
 		break;
 	}
+	temp = NULL;
 }
 
 void WelcomeScene::createItems(int type,float offset){
@@ -196,7 +198,7 @@ void WelcomeScene::createItems(int type,float offset){
 			value = 1500 * count;
 			break;	
 		case CLOTHES:
-			max = 7;
+			max = 4;
 			sprintf(name,"hero_%d.png",(count - 1));
 			value = 800 * count;
 			break;
@@ -263,16 +265,19 @@ void WelcomeScene::ccTouchesEnded(CCSet* touches,CCEvent* event){
 		ShopItem* item = (ShopItem*)itemsArray->objectAtIndex(i);
 		if(item->isTouch(location.x - scroll->getPositionX() - scroll->getContentOffset().x,
 			location.y - scroll->getPositionY())){
+				if(temp != NULL){
+					temp->setSelected(false);
+				}
 				if(item->getId() == touchId){
 					if(item->touchAction() == 0){
 						createItems(item->getType(),scroll->getContentOffset().x);
-
+						temp = NULL;
 					}else{
 						temp = item;
 						char t[100];
-
 						sprintf(t,"购买物品需要%d元宝，点击右侧的买入按钮即可购买",item->getValue());
 						tipText->setString(conv(t));
+						temp->setSelected(true);
 					}
 				}
 				break;

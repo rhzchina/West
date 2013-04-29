@@ -6,6 +6,7 @@ SelectScene::SelectScene(void)
 {
 	scroll = NULL;
 	level = NULL;
+	tipText = NULL;
 }
 
 
@@ -52,7 +53,12 @@ bool SelectScene::init(){
 			SETANCHPOS(levelName,x + 854 / 2 - itemBg->getContentSize().width / 2,240,0.5,0.5);
 			container->addChild(levelName);
 			
-			sprintf(name,"level%d.png",i);
+
+			if(i <= GameData::getLevel()){
+				sprintf(name,"level%d.png",i);
+			}else{
+				sprintf(name,"level%d_lock.png",i);
+			}
 			CCSprite* item = CCSprite::create(name);
 			SETANCHPOS(item,x + 930 / 2,255,0.5,0.5);
 			CC_BREAK_IF(!item);
@@ -70,7 +76,9 @@ bool SelectScene::init(){
 
 		scroll->setContainer(container);
 		scroll->setDirection(kCCScrollViewDirectionHorizontal);
+	
 		addChild(scroll);
+
 
 		CCMenu* menu = CCMenu::create();
 		SETANCHPOS(menu,0,0,0,0);
@@ -82,7 +90,7 @@ bool SelectScene::init(){
 		menu->addChild(back);
 
 		//描述背景
-		CCSprite* desBg = CCSprite::create("dlg_short.png");
+		CCSprite* desBg = CCSprite::create("dlg_long.png");
 		SETANCHPOS(desBg,425,0,0.5,0);
 		addChild(desBg);
 
@@ -94,6 +102,12 @@ bool SelectScene::init(){
 		SETANCHPOS(prev,0,300,0,0.5);
 		prev->setFlipX(true);
 		addChild(prev);
+
+		tipText = CCLabelTTF::create(" ","Arial",35);
+		SETANCHPOS(tipText,525,60,0.5,0.5);
+		tipText->setColor(ccc3(0,0,0));
+		addChild(tipText);
+
 
 		success = true;
 	}while(0);
@@ -154,7 +168,25 @@ int SelectScene::touchedLevel(CCPoint pos){
 		CCSprite* t = (CCSprite*)level->objectAtIndex(i);
 		if(CCRectMake(scroll->getContentOffset().x + t->getPositionX() - t->getContentSize().width / 2,t->getPositionY() - t->getContentSize().height / 2,
 			t->getContentSize().width,t->getContentSize().height).containsPoint(pos)){
-			num = i + 1;
+			if(i + 1 <= GameData::getLevel()){
+				num = i + 1;
+			}else{
+				int unlock = 0;
+				switch(i + 1){
+				case 2:
+					unlock = 2700;
+					break;
+				case 3:
+					unlock = 4000;
+					break;
+				case 4:
+					unlock = 5500;
+					break;
+				}
+				char str[100];
+				sprintf(str,conv("解锁本关需要挑战%dM,加油哦！"),unlock);
+				tipText->setString(str);
+			}
 		}
 	}
 	return num;

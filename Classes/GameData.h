@@ -40,7 +40,6 @@ private:
 	int score;
 	int distance;
 	int best;
-	int itemState[4][2];  //商店物品的使用情况，用二维数组记录，第一个表示已解锁，第二个表示正在使用
 	vector<int> data[4];
 	long loopCount;  //循环计数
 	static GameData* instance;

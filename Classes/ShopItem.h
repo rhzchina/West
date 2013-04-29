@@ -18,11 +18,15 @@ public:
 
 	int getType(){return type;}
 	int getId(){return id;}
+
+	void setSelected(bool s){selected = s;sFlag->setVisible(s);}
 private:
 	CCLayer* layer;
+	CCSprite* sFlag;
 	int value;
 	int type;
 	int id;
+	bool selected;
 };
 
 #endif

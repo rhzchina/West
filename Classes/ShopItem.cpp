@@ -55,9 +55,13 @@ ShopItem::ShopItem(int x,int y,const char* name,int v,int type, int id)
 		text->setColor(color);
 		SETANCHPOS(text,bg->getContentSize().width / 2 ,25,0.5,0);
 		layer->addChild(text);
-
-
 	}
+
+	sFlag = CCSprite::create("select.png");
+	SETANCHPOS(sFlag,20,80,0,0);
+	layer->addChild(sFlag);
+	sFlag->setVisible(false);
+
 }
 
 

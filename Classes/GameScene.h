@@ -25,6 +25,7 @@ public:
 	void tempChange(float temp){speedChange = temp;} //速度的临时改变量
 	void clearChange(){speedChange = 0;}
 	float getSpeed(){return speed + speedChange;}
+	void gameOver();
 	void setProgress(float percent){progressLeaf->setPositionX(progressBg->getPositionX() + percent *  progressBg->getContentSize().width) ;}
 	static CCScene* scene();
 	CREATE_FUNC(GameScene);

@@ -60,7 +60,7 @@ void Role::jump(){
 
 void Role::hold(){
 	if(state == ATTACK){
-		hero->setPositionY(hero->getPositionY() + 10);
+		//hero->setPositionY(hero->getPositionY() + 10);
 		changeState(HOLD);
 		int height = 350  - hero->getPositionY() > 0 ? 350 - hero->getPositionY() : 0;
 		//float time = height / 200.0f; 
@@ -96,7 +96,7 @@ void Role::actionCallback(){
 
 void Role::midCallback(){
 	if(state == ATTACK){
-	
+		resetWeapon();
 	}
 }
 
@@ -121,8 +121,8 @@ void Role::swing(){
 	ccBezierConfig config;
 	float sx = hero->getPositionX();
 	float sy = hero->getPositionY();
-	float ex = hero->getPositionX() + 150;
-	float ey = hero->getPositionY() + 150;
+	float ex = hero->getPositionX() + 100;
+	float ey = 350;
 
 	config.controlPoint_1 = ccp(sx,sy);
 	config.controlPoint_2 = ccp(sx + (ex - sx) * 0.5, sy + (ey - sy) * 0.5 - 300);
@@ -130,6 +130,8 @@ void Role::swing(){
 	hero->runAction(CCSequence::create(
 		CCMoveTo::create(0.1,ccp(sx - 50,sy + 10)),
 		CCEaseSineOut::create(CCBezierTo::create(0.5,config)),
+		CCCallFunc::create(this,callfunc_selector(Role::midCallback)),
+		CCJumpTo::create(0.4,ccp(ex,ey + 20),50,1),
 		CCCallFunc::create(this,callfunc_selector(Role::actionCallback)),NULL));
 }
 

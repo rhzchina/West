@@ -29,6 +29,7 @@ public:
 private:
 	CCScrollView* scroll;
 	CCArray* level;
+	CCLabelTTF* tipText;
 	int touched;
 	float lastX;
 };
