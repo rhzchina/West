@@ -46,25 +46,28 @@ bool WelcomeScene::init(){
 
 		CCMenuItemSprite* weapon = CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("weapon.png"),
 			CCSprite::createWithSpriteFrameName("weapon.png"),this,menu_selector(WelcomeScene::btnCallback));
-		SETANCHPOS(weapon,-450,120,0,0);
+		//SETANCHPOS(weapon,-450,120,0,0);
+		SETANCHPOS(weapon,-450,110,0,0);
 		weapon->setTag(WEAPON);
 		menu->addChild(weapon);
 
-		CCMenuItemSprite* treasure = CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("treasure.png"),
+	/*	CCMenuItemSprite* treasure = CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("treasure.png"),
 			CCSprite::createWithSpriteFrameName("treasure.png"),this,menu_selector(WelcomeScene::btnCallback));
 		SETANCHPOS(treasure,-450,50,0,0);
 		treasure->setTag(TREASURE);
-		menu->addChild(treasure);
+		menu->addChild(treasure);*/
 
 		CCMenuItemSprite* tip = CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("tip.png"),
 			CCSprite::createWithSpriteFrameName("tip.png"),this,menu_selector(WelcomeScene::btnCallback));
-		SETANCHPOS(tip,-450,-20,0,0);
+		//SETANCHPOS(tip,-450,-20,0,0);
+		SETANCHPOS(tip,-450,10,0,0);
 		tip->setTag(TIP);
 		menu->addChild(tip);
 
 		CCMenuItemSprite* clothes = CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("clothes.png"),
 			CCSprite::createWithSpriteFrameName("clothes.png"),this,menu_selector(WelcomeScene::btnCallback));
-		SETANCHPOS(clothes,-450,-100,0,0);
+		//SETANCHPOS(clothes,-450,-100,0,0);
+		SETANCHPOS(clothes,-450,-90,0,0);
 		clothes->setTag(CLOTHES);
 		menu->addChild(clothes);
 		//商城提示
@@ -143,15 +146,19 @@ void WelcomeScene::btnCallback(CCObject* sender){
 		break;
 	case WEAPON:
 		createItems(WEAPON);
+		tipText->setString(" ");
 		break;
 	case TREASURE:
 		createItems(TREASURE);
+		tipText->setString(" ");
 		break;
 	case TIP:
 		createItems(TIP);
+		tipText->setString(" ");
 		break;
 	case CLOTHES:
 		createItems(CLOTHES);
+		tipText->setString(" ");
 		break;
 	}
 	temp = NULL;

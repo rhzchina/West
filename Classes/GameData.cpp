@@ -65,3 +65,15 @@ bool GameData::bought(int type,int id){
 	}
 	return false;
 }
+
+
+void GameData::addDistance(int d){
+	instance->distance += d;
+	if(instance->distance > 5500){
+		instance ->level = 4;
+	}else if(instance->distance > 4000){
+		instance ->level = 3;
+	}else if(instance->distance > 2700){
+		instance ->level = 2;
+	}
+}

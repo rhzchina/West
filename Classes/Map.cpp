@@ -223,17 +223,17 @@ void Map::mapMove(GameScene* parent,Role* role){
 					switch(m->getTag()){
 					case 7:
 						if(y<-55){
-							y+=getSpeed() / 2.0f;
+							y+=getSpeed() / 1.5f;
 						}
 						break;
 					case 8:
 						if(y < -75){
-							y+=getSpeed() / 2.0f;
+							y+=getSpeed() / 1.5f;
 						}
 						break;
 					case 9:
 						if(y < -70){
-							y+=getSpeed() / 2.0f;
+							y+=getSpeed() / 1.5f;
 						}
 						break;
 					}
@@ -257,7 +257,7 @@ void Map::mapMove(GameScene* parent,Role* role){
 			m->setPosition(ccp(x,y));
 			if(m->getPositionX() < 854){
 				m->setVisible(true);
-				if(m->getTag() == 9 && m->getPositionX() + m->getContentSize().width < Role::POSX){
+				if(m->getTag() == 9 && m->getPositionX()< role->getPositionX() - role->getContentSize().width){
 					role->fly(true);
 					startCur = false;
 				}

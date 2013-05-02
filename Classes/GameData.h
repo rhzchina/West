@@ -25,9 +25,8 @@ public:
 	static void addScore(int s){instance->score += s;}
 	static int getScore(){return instance->score;}
 
-	static void addDistance(int d){instance->distance += d;}
 	static int getDistance(){return instance->distance;}
-		
+	static void addDistance(int);
 	static int getBest(){return instance->best;}
 	static void reset(bool all);
 

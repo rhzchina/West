@@ -27,3 +27,18 @@ char* conv(const char* str){
 	memcpy(r,str,strlen(str));
 #endif
 }
+
+CCAnimate* createAni(const char* preName, int count,float unit,bool zero){
+	CCArray* frames = CCArray::create();
+	frames->retain();
+	std::string format(preName);
+	for(int i = 0;i < count; i++){
+		char name[50];
+		sprintf(name,(format + "%d.png").c_str(),zero ? i : i + 1);
+		CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(name);
+		frames->addObject(frame);
+	}
+	CCAnimation* ani = CCAnimation::createWithSpriteFrames(frames,unit);
+	CCAnimate* animate = CCAnimate::create(ani);
+	return animate;
+}

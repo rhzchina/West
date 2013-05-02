@@ -11,8 +11,9 @@ Role::Role(CCLayer* parent)
 	sprintf(plist,"hero%d.plist",index);
 	sprintf(name,"hero%d.png",index);
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(plist,name);
-	CCSpriteFrame* prepare = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("run_1.png");
-	hero = CCSprite::createWithSpriteFrame(prepare);
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("effect.plist","effect.png");
+
+	hero = CCSprite::createWithSpriteFrameName("run_1.png");
 	hero->setPosition(ccp(POSX,POSY));
 
 	index = GameData::getState(WEAPON).at(0);
@@ -24,6 +25,11 @@ Role::Role(CCLayer* parent)
 	state = 0;
 	protecting = false;
 	die = false;
+	
+	effect = CCSprite::createWithSpriteFrameName("earth1.png");
+	effect->setPosition(ccp(POSX,POSY - hero->getContentSize().height / 2));
+	parent->addChild(effect,15);
+
 	changeState(NORMAL);
 }
 
@@ -112,6 +118,7 @@ void Role::weaponDone(Map* map,float frameTime){
 void Role::fall(){
 	if(!protecting && state != FALL){
 		state = FALL;
+		effect->setVisible(false);
 		hero->runAction(CCSequence::create(CCMoveTo::create(0.2f,ccp(hero->getPositionX(),0)),CCCallFunc::create(this,callfunc_selector(Role::actionCallback)),NULL));
 	}
 }
@@ -153,41 +160,43 @@ void Role::changeState(int s){
 	}
 	state = s > HOLD  ? NORMAL : s;
 	hero->stopAllActions();
+
+	if(effect->isVisible()){
+		effect->stopAllActions();
+		effect->setVisible(false);
+	}
 	int count = 0;
 	char* name = NULL; 
 	switch(state){
 	case NORMAL:
 		count = 5;
-		name = "run_%d.png";
+		name = "run_";
 		hero->setPositionY(130);
+		effect->runAction(CCRepeatForever::create(createAni("heart",3,0.1f)));
+		effect->setVisible(true);
+		effect->setPosition(ccp(hero->getPositionX() - 20,hero->getPositionY()));
 		break;
 	case SPEEDUP:
 		count = 4;
-		name = "speedup_%d.png";
+		name = "speedup_";
 		break;
 	case FLY:
 		count = 3;
-		name = "fly_%d.png";
+		name = "fly_";
+		effect->runAction(CCRepeatForever::create(createAni("speed",3,0.1f)));
+		effect->setPosition(hero->getPosition());
+		effect->setVisible(true);
 		break;
 	case JUMP:
 		count = 1;
-		name = "jump_%d.png";
+		name = "jump_";
 		break;
 	case HOLD:
 		count = 3;
-		name = "hold_%d.png";
+		name = "hold_";
 		break;
 	}
-	CCArray* frames = CCArray::createWithCapacity(count);
-	CCSpriteFrame* frame = NULL;
-	for(int i = 0;i < frames->capacity();i++){
-		char buf[30];
-		sprintf(buf,name,(i+1));
-		frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(buf);
-		frames->addObject(frame);
-	}
-	CCAnimate* ani = CCAnimate::create(CCAnimation::createWithSpriteFrames(frames,0.1f));
-	hero->runAction(CCRepeatForever::create(ani));
+	hero->runAction(CCRepeatForever::create(createAni(name,count,0.1f,false)));
 }
 
 CCRect Role::getWeaponRange(){
