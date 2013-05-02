@@ -43,6 +43,7 @@ private:
 	int state;
 	bool checkOnLand;
 	CCSprite* hero;
+	CCSprite* effect;
 	Weapon* weapon;
 	bool die;  
 };
