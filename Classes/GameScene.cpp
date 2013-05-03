@@ -60,7 +60,6 @@ bool GameScene::init(){
 		SETANCHPOS(distance,0,430,0,0);
 		addChild(distance,10);
 
-
 		CCSprite* best = CCSprite::createWithSpriteFrameName("best.png");
 		SETANCHPOS(best,20,390,0,0);
 		addChild(best,10);
