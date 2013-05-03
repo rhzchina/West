@@ -54,7 +54,7 @@ bool SelectScene::init(){
 			container->addChild(levelName);
 			
 
-			if(i <= GameData::getLevel()){
+			if(i <= GameData::getMaxLevel()){
 				sprintf(name,"level%d.png",i);
 			}else{
 				sprintf(name,"level%d_lock.png",i);
@@ -168,7 +168,7 @@ int SelectScene::touchedLevel(CCPoint pos){
 		CCSprite* t = (CCSprite*)level->objectAtIndex(i);
 		if(CCRectMake(scroll->getContentOffset().x + t->getPositionX() - t->getContentSize().width / 2,t->getPositionY() - t->getContentSize().height / 2,
 			t->getContentSize().width,t->getContentSize().height).containsPoint(pos)){
-			if(i + 1 <= GameData::getLevel()){
+			if(i + 1 <= GameData::getMaxLevel()){
 				num = i + 1;
 			}else{
 				int unlock = 0;

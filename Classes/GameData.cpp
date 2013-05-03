@@ -5,6 +5,7 @@ GameData* GameData::instance = NULL;
 GameData::GameData(void)
 {
 	level = 1;
+	max = 1;
 	gold = 99999999;
 	score = 0;
 	distance = 0;
@@ -70,10 +71,10 @@ bool GameData::bought(int type,int id){
 void GameData::addDistance(int d){
 	instance->distance += d;
 	if(instance->distance > 5500){
-		instance ->level = 4;
+		instance ->max = 4;
 	}else if(instance->distance > 4000){
-		instance ->level = 3;
+		instance ->max = 3;
 	}else if(instance->distance > 2700){
-		instance ->level = 2;
+		instance ->max = 2;
 	}
 }
