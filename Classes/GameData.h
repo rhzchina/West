@@ -13,6 +13,8 @@ public:
 	static	void addLevel();
 	static void setLevel(int);
 
+	static int getMaxLevel(){return instance->max;}
+
 	static void setGold(int g){instance->gold = g;}
 	static int getGold(){return instance->gold;}
 	static void addGold(int change){instance->gold += change;}
@@ -35,6 +37,7 @@ public:
 private:
 	GameData(void);
 	int level;
+	int max;
 	int gold;
 	int score;
 	int distance;
