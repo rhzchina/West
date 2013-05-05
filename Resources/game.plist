@@ -243,13 +243,13 @@
                 <key>frame</key>
                 <string>{{103,415},{52,66}}</string>
                 <key>offset</key>
-                <string>{0,-2}</string>
+                <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{7,10},{52,66}}</string>
+                <string>{{0,0},{52,66}}</string>
                 <key>sourceSize</key>
-                <string>{66,82}</string>
+                <string>{52,66}</string>
             </dict>
             <key>ready.png</key>
             <dict>
@@ -313,7 +313,7 @@
             <key>size</key>
             <string>{508,499}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:d4ecf6d56d3fc3b1d4903cbe1f3a510d$</string>
+            <string>$TexturePacker:SmartUpdate:d33a8d46f6cb2ba60f5669b690d35aef$</string>
             <key>textureFileName</key>
             <string>game.png</string>
         </dict>

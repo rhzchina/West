@@ -14,6 +14,7 @@ GameScene::GameScene(void)
 	overText = NULL;
 	items = NULL;
 	pauseLayer = NULL;
+	props = new vector<Prop*>();
 }
 
 
@@ -50,6 +51,8 @@ bool GameScene::init(){
 		hero = new Role(this);
 
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("game.plist","game.png");
+
+        initProps(200);
 
 		CCSprite* scorePeach = CCSprite::createWithSpriteFrameName("score_peach.png");
 		SETANCHPOS(scorePeach,600,420,0,0);
@@ -146,6 +149,21 @@ void GameScene::bgMove(float dt){
 
 	//地图移动
 	map->mapMove(this,hero);
+
+	//判断是否碰到道具
+	for(vector<Prop*>::iterator it =  props->begin();it != props->end();){
+		if((*it)->move(map->getSpeed())){
+			delete *it;
+			it = props->erase(it);
+		}
+		if(it != props->end()){
+			++it;
+		}
+	}
+	if((*(props->end() - 1))->getPosX() < 800){
+		initProps(854);
+	}
+
 	if(hero->getState() != Role::ATTACK){
 		map->clearChange();
 		clearChange();
@@ -278,6 +296,65 @@ void GameScene::initBgItems(int level){
 	}
 	SETANCHPOS(items,0,0,0,0);
 	addChild(items);
+}
+
+void GameScene::initProps(float xPos){
+
+	int p1[][10] = {{0,0,0,1,1,1,1,0,0,0},
+					{0,0,1,0,0,0,0,1,0,0},
+					{0,1,0,0,0,0,0,0,1,0},
+					{1,0,0,0,0,0,0,0,0,1}};
+
+	int p2[][10] = { {0,0,0,0,0,0,0,0,0,0},
+					{0,0,0,0,0,0,0,0,0,0},
+					{0,0,0,0,0,0,0,0,0,0},
+					{1,1,1,1,1,1,1,1,1,1}};
+
+	int p3[][10] = {{1,0,0,0,0,0,1,0,0,0},
+					{0,1,0,0,0,1,0,1,0,0},
+					{0,0,1,0,1,0,0,0,1,0},
+					{0,0,0,1,0,0,0,0,0,1}};
+
+	int **p = new int*[4];
+	for(int i = 0;i < 4; i++){
+		p[i] = new int[10];
+	}
+
+	switch(rand() % 3){
+	case 0:
+		for(int i = 0;i < 4;i++){
+			for(int j = 0;j < 10; j++){
+				p[i][j] = p1[i][j];
+			}
+		}	
+		break;
+	case 1:
+		for(int i = 0;i < 4;i++){
+			for(int j = 0;j < 10; j++){
+				p[i][j] = p2[i][j];
+			}
+		}	
+		break;
+	case 2:
+		for(int i = 0;i < 4;i++){
+			for(int j = 0;j < 10; j++){
+				p[i][j] = p3[i][j];
+			}
+		}
+		break;
+	}
+
+	float x = xPos, y = 300;
+	for(int i = 0;i < 4; i++){
+		for(int j = 0; j < 10; j++){
+			if(p[i][j] != 0){
+				props->push_back(new Prop(p[i][j],this,x,y));	
+			}
+			x += 60;
+		}
+		x = xPos;
+		y -= 50;
+	} 
 }
 
 void GameScene::btnCallback(CCObject* sender){

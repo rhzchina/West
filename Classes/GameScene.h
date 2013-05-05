@@ -3,8 +3,10 @@
 #include "cocos2d.h"
 #include "Map.h"
 #include "Role.h"
+#include "Prop.h"
 
 USING_NS_CC;
+using namespace std;
 class GameScene : public CCLayer 
 {
 public:
@@ -27,8 +29,12 @@ public:
 	float getSpeed(){return speed + speedChange;}
 	void gameOver();
 	void setProgress(float percent){progressLeaf->setPositionX(progressBg->getPositionX() + percent *  progressBg->getContentSize().width) ;}
+
+	void initProps(float xPos);
+
 	static CCScene* scene();
 	CREATE_FUNC(GameScene);
+
 private:
 	CCSprite* scrollBg;
 	CCSprite* scrollBg1;
@@ -46,5 +52,7 @@ private:
 	CCLabelAtlas* scoreValue;
 	CCLabelAtlas* distanceValue;
 	CCLabelAtlas* bestValue;
+	vector<Prop*>* props;
+	
 };
 #endif
