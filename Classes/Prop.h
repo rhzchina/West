@@ -3,7 +3,7 @@
 #include "cocos2d.h"
 USING_NS_CC;
 
-class Prop
+class Prop : public CCObject
 {
 public:
 	static const int SCORE = 1;

@@ -6,11 +6,10 @@
 #include "Prop.h"
 
 USING_NS_CC;
-using namespace std;
 class GameScene : public CCLayer 
 {
 public:
-	static const int SPEEDUP = 4;  //速度的临时改变量 
+	static const int SPEEDUP = 1;  //速度的临时改变量 
 	GameScene(void);
 	~GameScene(void);
 
@@ -52,7 +51,8 @@ private:
 	CCLabelAtlas* scoreValue;
 	CCLabelAtlas* distanceValue;
 	CCLabelAtlas* bestValue;
-	vector<Prop*>* props;
+	CCArray*  props[2];	
+	int propIndex;
 	
 };
 #endif
