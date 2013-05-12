@@ -12,6 +12,8 @@ Map::Map(int level,GameScene* parent)
 	curLevel = 1;*/
 	speed = 5.1f;
 	speedChange = 0;
+	map = CCArray::create();
+	map->retain();
 	resetMap(level,parent);
 }
 
@@ -25,7 +27,6 @@ void Map::resetMap(int level,GameScene* parent){
 	countDistance = false;
 	startCur = false;
 	curDis = 0;
-	map = NULL;
 	mapUp = false;
 	if(&mapData == NULL){
 		mapData = vector<int>();
@@ -105,8 +106,6 @@ void Map::initMap(int level){
 	float x = 0;
 	float y = 0;
 
-		map = CCArray::create();
-		map->retain();
 		for(int i = 0;i <mapData.size();i++){
 			if(mapData.at(i)!=0){    //陆地
 				countDistance = true;  //第一个不是0的位置起开始计算总长
@@ -257,18 +256,21 @@ void Map::mapMove(GameScene* parent,Role* role){
 			m->setPosition(ccp(x,y));
 			if(m->getPositionX() < 854){
 				m->setVisible(true);
-				if(m->getTag() == 9 && m->getPositionX()< role->getPositionX() - role->getContentSize().width){
+				if(startCur && m->getTag() == 9 && m->getPositionX()< role->getPositionX() - role->getContentSize().width){
 					role->fly(true);
 					startCur = false;
 				}
 			}
 		}else{
-			map->removeObjectAtIndex(i);
-			m->removeFromParentAndCleanup(true);
 		}
 	}
 
-	if(map->count() == 0){
+	CCSprite* last = (CCSprite*)map->lastObject();
+	if(last->getPositionX() + last->getContentSize().width <= 0 ){
+		for(int i = 0;i < map->count();i++){
+			parent->removeChild((CCSprite*)map->objectAtIndex(i));
+		}
+		map->removeAllObjects();
 		resetMap(curLevel + 1,parent);
 	}
 
