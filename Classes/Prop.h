@@ -13,9 +13,15 @@ public:
 	~Prop();
 
 	bool move(float speed);
+	bool collision(CCSprite*);
 	float getPosX(){return prop->getPositionX();}
+	void setCollision(CCLayer*);
+	void callback(CCNode*);
+	int getScore(){return score;}
 private:
 	CCSprite* prop;
+	bool colli;  
+	int score;
 };
 
 #endif

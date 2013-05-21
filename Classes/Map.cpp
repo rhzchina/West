@@ -202,7 +202,7 @@ void Map::mapMove(GameScene* parent,Role* role){
 
 		if(i == 0){ //第二大关卡开始，结束玩家飞行状态
 			if(role->isProtected() && role->getState() == Role::FLY){
-				if(m->getTag() < 7 && m->getPositionX() <= Role::POSX){
+				if(m->getPositionX() > 0 && m->getTag() < 7 && m->getPositionX() <= Role::POSX){
 					role->nextLevel();
 					speed += 0.5;  //每一关增加0.5速 度
 					parent->addSpeed(0.5);
@@ -243,7 +243,7 @@ void Map::mapMove(GameScene* parent,Role* role){
 				}
 				x -= getSpeed() / 1.5f;
 			}else{
-				x-=getSpeed();
+				x -= getSpeed();
 			}
 			//一关结束的地图向上移动
 			if(!mapUp && i >= map->count() - 3){
@@ -254,7 +254,7 @@ void Map::mapMove(GameScene* parent,Role* role){
 			}
 
 			m->setPosition(ccp(x,y));
-			if(m->getPositionX() < 854){
+			if(m->getPositionX() < 854 && m->getPositionX() + m->getContentSize().width > 0){
 				m->setVisible(true);
 				if(startCur && m->getTag() == 9 && m->getPositionX()< role->getPositionX() - role->getContentSize().width){
 					role->fly(true);
@@ -268,7 +268,7 @@ void Map::mapMove(GameScene* parent,Role* role){
 	CCSprite* last = (CCSprite*)map->lastObject();
 	if(last->getPositionX() + last->getContentSize().width <= 0 ){
 		for(int i = 0;i < map->count();i++){
-			parent->removeChild((CCSprite*)map->objectAtIndex(i));
+			parent->removeChild((CCSprite*)map->objectAtIndex(i),true);
 		}
 		map->removeAllObjects();
 		resetMap(curLevel + 1,parent);

@@ -2,6 +2,7 @@
 #include "StartScene.h"
 #include "GameData.h"
 #include <math.h>
+#include "Prop.h"
 GameScene::GameScene(void)
 {
 	scrollBg1 = NULL;
@@ -55,7 +56,7 @@ bool GameScene::init(){
 		hero = new Role(this);
 
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("game.plist","game.png");
-
+		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("prop_effect.plist","prop_effect.png");
 		initProps(200);
 
 		CCSprite* scorePeach = CCSprite::createWithSpriteFrameName("score_peach.png");
@@ -156,7 +157,10 @@ void GameScene::bgMove(float dt){
 	//判断是否碰到道具
 	for(int j = 0; j < 2; j++){
 		for(int i = 0;i < props[j]->count(); i++){
-			if(((Prop*)props[j]->objectAtIndex(i))->move(map->getSpeed())){
+			Prop* temp =  (Prop*)props[j]->objectAtIndex(i);
+			temp->move(map->getSpeed());
+			if(temp->collision(hero->getSprite())){
+				temp->setCollision(this);
 			}
 		}
 	}
@@ -165,6 +169,7 @@ void GameScene::bgMove(float dt){
 		for(int i = 0;i < props[propIndex]->count();i++){
 			props[propIndex]->objectAtIndex(i)->release();
 		}
+
 		props[propIndex]->removeAllObjects();
 		if(++propIndex > 1){
 			propIndex = 0;

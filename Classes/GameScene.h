@@ -3,7 +3,6 @@
 #include "cocos2d.h"
 #include "Map.h"
 #include "Role.h"
-#include "Prop.h"
 
 USING_NS_CC;
 class GameScene : public CCLayer 
