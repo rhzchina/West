@@ -12,6 +12,10 @@ SelectScene::SelectScene(void)
 
 SelectScene::~SelectScene(void)
 {
+	if(level){
+		level->release();
+		level = NULL;
+	}
 }
 
 bool SelectScene::init(){
@@ -36,18 +40,18 @@ bool SelectScene::init(){
 		level = CCArray::createWithCapacity(MAXLEVEL);
 		level->retain();
 		for(int i = 1;i <= MAXLEVEL;i++){
-			//閫夊叧鑳屾櫙
+			//选关背景
 			CCSprite* itemBg = CCSprite::create("choose_bg.png");
 			SETANCHPOS(itemBg,x + 930 / 2,240,0.5,0.5);
 			container->addChild(itemBg);
 
-			//閫夊叧鍚嶇О鑳屾櫙
+			//选关名称背景
 			CCSprite* nameBg = CCSprite::createWithSpriteFrameName("name_bg.png");
 			SETANCHPOS(nameBg,x + 854 / 2 - itemBg->getContentSize().width / 2,240,0.5,0.5);
 			container->addChild(nameBg);
 
 			char name[20];
-			//鍏冲崱鍚嶇О
+			//关卡名称
 			sprintf(name,"level%d_name.png",i);
 			CCSprite* levelName = CCSprite::createWithSpriteFrameName(name);
 			SETANCHPOS(levelName,x + 854 / 2 - itemBg->getContentSize().width / 2,240,0.5,0.5);
@@ -89,7 +93,7 @@ bool SelectScene::init(){
 		back->setTag(1);
 		menu->addChild(back);
 
-		//鎻忚堪鑳屾櫙
+		//描述背景
 		CCSprite* desBg = CCSprite::create("dlg_long.png");
 		SETANCHPOS(desBg,425,0,0.5,0);
 		addChild(desBg);
@@ -107,7 +111,6 @@ bool SelectScene::init(){
 		SETANCHPOS(tipText,525,60,0.5,0.5);
 		tipText->setColor(ccc3(0,0,0));
 		addChild(tipText);
-
 
 		success = true;
 	}while(0);
@@ -183,9 +186,9 @@ int SelectScene::touchedLevel(CCPoint pos){
 					unlock = 5500;
 					break;
 				}
-				char str[100];
-				sprintf(str,conv("瑙ｉ攣鏈叧闇�瑕佹寫鎴?dM,鍔犳补鍝︼紒"),unlock);
-				tipText->setString(str);
+				/*char str[100];
+				sprintf(str,conv("解锁本关需要挑战%dM,加油哦！"),unlock);
+				tipText->setString(str);*/
 			}
 		}
 	}
