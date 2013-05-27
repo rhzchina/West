@@ -8,7 +8,7 @@ GameData::GameData(void)
 	max = 1;
 	gold = 99999999;
 	score = 0;
-	distance = 0;
+	distance = 1000000;
 	best = 0;
 	loopCount = 0;
 	//memset(itemState,0,sizeof(itemState));

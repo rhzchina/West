@@ -234,8 +234,64 @@ void GameScene::initBgItems(int level){
 	int x = 0;
 	switch(level){
 	case 1:
+		name.replace(name.begin(),name.end(),dir);
+
+		temp = CCSprite::create(name.append("rainbow.png").c_str());
+		SETANCHPOS(temp,200, 200, 0.5, 0);
+		items->addChild(temp);
+		
+		name.replace(name.begin(),name.end(),dir);
+		temp = CCSprite::create(name.append("small_hill.png").c_str());
+		SETANCHPOS(temp,300, 0, 0.5, 0);
+		items->addChild(temp);
+		
+		name.replace(name.begin(),name.end(),dir);
+		temp = CCSprite::create(name.append("hill.png").c_str());
+		SETANCHPOS(temp,600, 0, 0.5, 0);
+		items->addChild(temp);
+
+		for(int i = 0;i < 8; i++){
+			sprintf(tempName,"land%d/bloud%d.png",level,i);
+			temp = CCSprite::create(tempName);
+			SETANCHPOS(temp,x,150 + rand() % 100,0,0);
+			items->addChild(temp);
+			x += temp->getContentSize().width;
+		}
+		
+
 		break;
 	case 2:
+
+		for(int i = 1;i < 3; i++){
+			sprintf(tempName,"land%d/frog%d.png",level,i);
+			temp = CCSprite::create(tempName);
+			SETANCHPOS(temp,x,300 + rand() % 100,0,0);
+			items->addChild(temp);
+			x += temp->getContentSize().width;
+		}
+
+		name.replace(name.begin(),name.end(),dir);
+		temp = CCSprite::create(name.append("hill1.png").c_str());
+		SETANCHPOS(temp,300, 0, 0.5, 0);
+		items->addChild(temp);
+		
+		name.replace(name.begin(),name.end(),dir);
+		temp = CCSprite::create(name.append("hill2.png").c_str());
+		SETANCHPOS(temp,600, 0, 0.5, 0);
+		items->addChild(temp);
+		
+		name.replace(name.begin(),name.end(),dir);
+		temp = CCSprite::create(name.append("water.png").c_str());
+		SETANCHPOS(temp,500, 0, 0.5, 0);
+		items->addChild(temp);
+
+		for(int i = 1;i < 3; i++){
+			sprintf(tempName,"land%d/frog%d.png",level,i);
+			temp = CCSprite::create(tempName);
+			SETANCHPOS(temp,x,150 + rand() % 100,0,0);
+			items->addChild(temp);
+			x += temp->getContentSize().width;
+		}
 		break;
 	case 3:
 		items->setContentSize(CCSizeMake(1380,480));
@@ -313,18 +369,20 @@ void GameScene::initBgItems(int level){
 
 void GameScene::initProps(float xPos){
 
-	int p1[][10] = {{0,0,0,1,1,1,1,0,0,0},
+	int p1[][10] = {
+	{0,0,0,1,1,1,1,0,0,0},
 	{0,0,1,0,0,0,0,1,0,0},
 	{0,1,0,0,0,0,0,0,1,0},
 	{1,0,0,0,0,0,0,0,0,1}};
 
-	int p2[][10] = { {0,0,0,0,0,0,0,0,0,0},
+	int p2[][10] = { 
 	{0,0,0,0,0,0,0,0,0,0},
+	{0,0,0,0,2,0,0,0,0,0},
 	{0,0,0,0,0,0,0,0,0,0},
 	{1,1,1,1,1,1,1,1,1,1}};
 
 	int p3[][10] = {{1,0,0,0,0,0,1,0,0,0},
-	{0,1,0,0,0,1,0,1,0,0},
+	{0,1,0,0,0,1,0,1,0,2},
 	{0,0,1,0,1,0,0,0,1,0},
 	{0,0,0,1,0,0,0,0,0,1}};
 

@@ -41,7 +41,7 @@ void Map::resetMap(int level,GameScene* parent){
 void Map::createData(int level){
 	if(level == 1){
 		int array[] = {1, 2, 6, 2, 3, 0, 4, 0	, 0, 6, 0, 0, 0, 1, 2,
-			3, 0,0, 5, 0,7,8,9};
+			3, 0, 5, 0,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
