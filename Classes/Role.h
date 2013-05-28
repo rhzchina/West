@@ -21,7 +21,8 @@ public:
 	static const int POSY = 130;
 	Role(CCLayer*);
 	~Role(void);
-	void changeState(int);
+	void changeState(int, bool = false);
+	void resumeNormal();
 	int getState(){return state;}
 	CCSprite* getSprite(){return hero;}
 	void jump();
@@ -38,13 +39,17 @@ public:
 	bool isProtected(){return protecting;}
 	void nextLevel();
 	bool isDie(){return die;}
+	void changeRole(int);     // 角色变身
+	char* getChange(){return change;}
 private:
 	bool protecting;   //无敌状态
 	int state;
+	char* change;          //变身状态
 	bool checkOnLand;
 	CCSprite* hero;
 	CCSprite* effect;
 	Weapon* weapon;
 	bool die;  
+	int cur[3];  //当前已加载状态
 };
 #endif

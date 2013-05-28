@@ -5,6 +5,8 @@
 
 Role::Role(CCLayer* parent)
 {
+
+	change = "";
 	int index = GameData::getState(CLOTHES).at(0);
 	char plist[20];
 	char name[20];
@@ -31,6 +33,10 @@ Role::Role(CCLayer* parent)
 	parent->addChild(effect,15);
 
 	changeState(NORMAL);
+
+	for(int i = 0;i < 3;i ++){
+		cur[i] = 0;
+	}
 }
 
 
@@ -154,23 +160,72 @@ void Role::fly(bool over){
 	}
 }
 
-void Role::changeState(int s){
-	if(state == ATTACK){
-		resetWeapon();
-	}
-	state = s > HOLD  ? NORMAL : s;
-	hero->stopAllActions();
+void Role::resumeNormal(){
+	change = "";
+	changeState(state, true);
+}
 
-	if(effect->isVisible()){
-		effect->stopAllActions();
-		effect->setVisible(false);
+void Role::changeRole(int index){
+	bool add = true;
+		for(int i = 0;i < 3; i++){
+			if(cur[i] == index){
+				add = false;
+				break;
+			}
+		}
+		if(add){
+			for(int i = 0;i < 3; i++){
+				if(cur[i] == 0){
+					cur[i] = index;
+					break;
+				}
+			}
+		}
+	switch(index){
+	case 4:
+		if(add){
+			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("hero4.plist", "hero4.png");	
+		}
+		change = "4/";
+	break;
+	case 5:	
+		if(add){
+			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("hero5.plist", "hero5.png");	
+		}
+		change = "5/";
+	break;
+	case 6:
+		if(add){
+			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("hero6.plist", "hero6.png");	
+		}
+		change = "6/";
+	break;
 	}
+	changeState(state,true);
+}
+
+void Role::changeState(int s, bool first){
+		if(state == ATTACK){
+			resetWeapon();
+		}
+		state = s > HOLD  ? NORMAL : s;
+
+		if(first){
+			hero->stopActionByTag(999);
+		}else{
+			hero->stopAllActions();
+		}
+			
+		if(effect->isVisible()){		
+			effect->stopAllActions();
+			effect->setVisible(false);
+		}
 	int count = 0;
-	char* name = NULL; 
+	string name(change); 
 	switch(state){
 	case NORMAL:
 		count = 5;
-		name = "run_";
+		name.append("run_");
 		hero->setPositionY(130);
 		effect->runAction(CCRepeatForever::create(createAni("heart",3,0.1f)));
 		effect->setVisible(true);
@@ -178,25 +233,27 @@ void Role::changeState(int s){
 		break;
 	case SPEEDUP:
 		count = 4;
-		name = "speedup_";
+		name.append("speedup_");
 		break;
 	case FLY:
 		count = 3;
-		name = "fly_";
+		name.append("fly_");
 		effect->runAction(CCRepeatForever::create(createAni("speed",3,0.1f)));
 		effect->setPosition(hero->getPosition());
 		effect->setVisible(true);
 		break;
 	case JUMP:
 		count = 1;
-		name = "jump_";
+		name.append("jump_");
 		break;
 	case HOLD:
 		count = 3;
-		name = "hold_";
+		name.append("hold_");
 		break;
 	}
-	hero->runAction(CCRepeatForever::create(createAni(name,count,0.1f,false)));
+	CCRepeatForever* repeat = CCRepeatForever::create(createAni(name.c_str(),count,0.1f,false));
+	repeat->setTag(999);
+	hero->runAction(repeat);
 }
 
 CCRect Role::getWeaponRange(){

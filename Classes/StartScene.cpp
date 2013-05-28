@@ -135,8 +135,10 @@ void StartScene::btnCallback(CCObject* sender){
 	case 4:
 		if(((CCMenuItemToggle*)sender)->selectedItem() == soundOn){
 			CCLOG("close sound");
+			CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
 		}else{
 			CCLOG("open sound");
+			CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
 		}
 		break;
 	}

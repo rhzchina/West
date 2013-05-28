@@ -18,10 +18,12 @@ public:
 	void setCollision(CCLayer*);
 	void callback(CCNode*);
 	int getScore(){return score;}
+	int getType(){return type;}
 private:
 	CCSprite* prop;
 	bool colli;  
 	int score;
+	int type;
 };
 
 #endif

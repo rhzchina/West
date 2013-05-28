@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>fly_1.png</key>
+            <key>4/fly_1.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{270,0},{133,71}}</string>
@@ -17,7 +17,7 @@
                 <key>sourceSize</key>
                 <string>{133,71}</string>
             </dict>
-            <key>fly_2.png</key>
+            <key>4/fly_2.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{135,0},{133,71}}</string>
@@ -30,7 +30,7 @@
                 <key>sourceSize</key>
                 <string>{133,71}</string>
             </dict>
-            <key>fly_3.png</key>
+            <key>4/fly_3.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{0,0},{133,71}}</string>
@@ -43,7 +43,7 @@
                 <key>sourceSize</key>
                 <string>{133,71}</string>
             </dict>
-            <key>hold_1.png</key>
+            <key>4/hold_1.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{311,175},{93,89}}</string>
@@ -56,7 +56,7 @@
                 <key>sourceSize</key>
                 <string>{97,93}</string>
             </dict>
-            <key>hold_2.png</key>
+            <key>4/hold_2.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{406,175},{93,85}}</string>
@@ -69,7 +69,7 @@
                 <key>sourceSize</key>
                 <string>{97,93}</string>
             </dict>
-            <key>hold_3.png</key>
+            <key>4/hold_3.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{91,333},{89,93}}</string>
@@ -82,7 +82,7 @@
                 <key>sourceSize</key>
                 <string>{97,93}</string>
             </dict>
-            <key>jump_1.png</key>
+            <key>4/jump_1.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{0,155},{83,109}}</string>
@@ -95,7 +95,7 @@
                 <key>sourceSize</key>
                 <string>{83,109}</string>
             </dict>
-            <key>run_1.png</key>
+            <key>4/run_1.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{405,0},{101,91}}</string>
@@ -108,7 +108,7 @@
                 <key>sourceSize</key>
                 <string>{101,91}</string>
             </dict>
-            <key>run_2.png</key>
+            <key>4/run_2.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{0,240},{99,91}}</string>
@@ -121,7 +121,7 @@
                 <key>sourceSize</key>
                 <string>{101,91}</string>
             </dict>
-            <key>run_3.png</key>
+            <key>4/run_3.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{0,333},{97,89}}</string>
@@ -134,7 +134,7 @@
                 <key>sourceSize</key>
                 <string>{101,91}</string>
             </dict>
-            <key>run_4.png</key>
+            <key>4/run_4.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{212,155},{97,91}}</string>
@@ -147,7 +147,7 @@
                 <key>sourceSize</key>
                 <string>{101,91}</string>
             </dict>
-            <key>run_5.png</key>
+            <key>4/run_5.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{111,155},{99,91}}</string>
@@ -160,7 +160,7 @@
                 <key>sourceSize</key>
                 <string>{101,91}</string>
             </dict>
-            <key>speedup_1.png</key>
+            <key>4/speedup_1.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{336,93},{110,80}}</string>
@@ -173,7 +173,7 @@
                 <key>sourceSize</key>
                 <string>{112,80}</string>
             </dict>
-            <key>speedup_2.png</key>
+            <key>4/speedup_2.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{224,73},{110,80}}</string>
@@ -186,7 +186,7 @@
                 <key>sourceSize</key>
                 <string>{112,80}</string>
             </dict>
-            <key>speedup_3.png</key>
+            <key>4/speedup_3.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{112,73},{110,80}}</string>
@@ -199,7 +199,7 @@
                 <key>sourceSize</key>
                 <string>{112,80}</string>
             </dict>
-            <key>speedup_4.png</key>
+            <key>4/speedup_4.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{0,73},{110,80}}</string>

@@ -5,6 +5,7 @@
 Prop::Prop(int type, CCLayer* parent, float x, float y)
 {
 	colli = false;
+	this->type = type;
 	char name[50];
 	switch(type){
 	case SCORE:
@@ -66,24 +67,26 @@ bool Prop::collision(CCSprite* hero){
 void Prop::setCollision(CCLayer* parent){
 	colli = true;
 	prop->runAction(CCSequence::create(createAni("prop_",4,0.1f),CCCallFuncN::create(prop,callfuncN_selector(Prop::callback)),NULL));
-	char num[50];
-	sprintf(num,"%d",score);
-	CCLabelAtlas* scoreAni = CCLabelAtlas::create(num,"num/num_red.png",28,40,'0');
-	//SETANCHPOS(scoreAni,prop->getPositionX(), prop->getPositionY(), 0 ,0);
-	SETANCHPOS(scoreAni,0, 0, 0 ,0);
-	CCLayer* temp = CCLayer::create();
-	SETANCHPOS(temp,prop->getPositionX(), prop->getPositionY(), 0 ,0);
-	temp->addChild(scoreAni);
-	
-	CCSprite* add = CCSprite::createWithSpriteFrameName("add.png");
-	SETANCHPOS(add, -add->getContentSize().width, 0, 0, 0);
-	temp->addChild(add);
 
-	parent->addChild(temp,10);
-	temp->setTag(1);
-	temp->runAction(CCSpawn::create(CCMoveTo::create(0.5,ccp(prop->getPositionX(),prop->getPositionY() + 100)),CCFadeOut::create(0.5),NULL));
-	temp->runAction(CCSequence::create(CCEaseBounceOut::create(CCScaleTo::create(0.5,1.5,1.5)),CCCallFuncN::create(scoreAni,callfuncN_selector(Prop::callback)),NULL));
-	
+	if(type == SCORE){
+		char num[50];
+		sprintf(num,"%d",score);
+		CCLabelAtlas* scoreAni = CCLabelAtlas::create(num,"num/num_red.png",28,40,'0');
+		//SETANCHPOS(scoreAni,prop->getPositionX(), prop->getPositionY(), 0 ,0);
+		SETANCHPOS(scoreAni,0, 0, 0 ,0);
+		CCLayer* temp = CCLayer::create();
+		SETANCHPOS(temp,prop->getPositionX(), prop->getPositionY(), 0 ,0);
+		temp->addChild(scoreAni);
+		
+		CCSprite* add = CCSprite::createWithSpriteFrameName("add.png");
+		SETANCHPOS(add, -add->getContentSize().width, 0, 0, 0);
+		temp->addChild(add);
+			
+		parent->addChild(temp,10);
+		temp->setTag(1);
+		temp->runAction(CCSpawn::create(CCMoveTo::create(0.5,ccp(prop->getPositionX(),prop->getPositionY() + 100)),CCFadeOut::create(0.5),NULL));
+		temp->runAction(CCSequence::create(CCEaseBounceOut::create(CCScaleTo::create(0.5,1.5,1.5)),CCCallFuncN::create(scoreAni,callfuncN_selector(Prop::callback)),NULL));
+	}
 }
 
 void Prop::callback(CCNode* sender){

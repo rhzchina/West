@@ -38,58 +38,66 @@ void Map::resetMap(int level,GameScene* parent){
 	addMap(parent);
 }
 
-void Map::createData(int level){
+void Map::createData(int l){
+	if(l > 1){
+		for(int i = 0; i < 13; i++){
+			mapData.push_back(0);
+		}
+	}else{
+		startCur = true;
+	}
+	int level = rand() % 9 + 1;
+	CCLog("%d",level);
 	if(level == 1){
 		int array[] = {1, 2, 6, 2, 3, 0, 4, 0	, 0, 6, 0, 0, 0, 1, 2,
 			3, 0, 5, 0,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
-		startCur = true;
 	}else if(level == 2){
-		int array[] =  {0,0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 5, 0, 5, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3,
+		int array[] =  { 1, 2, 6, 2, 3, 0, 5, 0, 5, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3,
 			0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0,7,8,9 };
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 3){
-		int array[] =  {0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0,
+		int array[] =  { 1, 2, 6, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0,
 			1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0,7,8,9 };
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 4){
-		int array[] =  { 0,0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 0, 6, 0, 0, 0, 1, 3, 0, 0, 6, 0, 0,
+		int array[] =  {  1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 0, 6, 0, 0, 0, 1, 3, 0, 0, 6, 0, 0,
 			0, 1, 3, 0, 5, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0, 1, 2, 6, 2, 3, 0, 5, 0, 4, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 5){
-		int array[] =  {0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 5, 0, 5,
+		int array[] =  { 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 5, 0, 5,
 			0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 6){
-	int array[] =  {0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0, 1, 3,
+	int array[] =  { 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 3, 0, 5, 0, 1, 3,
 			0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0, 1, 3, 0, 5, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 7){
-		int array[] =  {0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 5, 0, 5,
+		int array[] =  {1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 5, 0, 5,
 			0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 8){
-		int array[] =  {0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 0, 6, 0,
+		int array[] =  {1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 0, 6, 0,
 			0, 0, 1, 3, 0, 5, 0, 0, 6, 0, 0, 0, 1, 2, 3, 1, 2, 6, 2, 3, 0, 5, 0, 4, 0 ,7,8,9};
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);
 		}
 	}else if(level == 9){
-		int array[] =  { 0,0,0,0,0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 0, 6, 0,
+		int array[] =  { 1, 2, 6, 2, 3, 0, 4, 0, 0, 6, 0, 0, 0, 1, 2, 3, 0, 0, 6, 0,
 			0, 0, 1, 3, 0, 5, 0, 0, 6, 0, 0, 0, 1, 2, 3,0, 1, 2, 6, 2, 3, 0, 5, 0, 4, 0,7,8,9 };
 		for(int i = 0;i < sizeof(array)/sizeof(array[0]);i++){
 			mapData.push_back(array[i]);

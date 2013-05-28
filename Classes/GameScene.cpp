@@ -7,6 +7,8 @@ GameScene::GameScene(void)
 {
 	scrollBg1 = NULL;
 	scrollBg = NULL;
+	totalTime = 0;
+	count = false;
 	bgX = 0;
 	speed = 0.5;
 	speedChange = 0;
@@ -25,6 +27,7 @@ GameScene::GameScene(void)
 
 GameScene::~GameScene(void)
 {
+
 
 }
 
@@ -140,6 +143,8 @@ void GameScene::ccTouchesEnded(CCSet* touches,CCEvent* event){
 
 void GameScene::bgMove(float dt){
 	//游戏数据存储，根据移动的速度计算得分和距离
+
+	srand(time(0));
 	GameData::addLoop();
 	if(GameData::getLoop() % 5 == 0){
 		GameData::addDistance(getSpeed() * 2);
@@ -160,6 +165,12 @@ void GameScene::bgMove(float dt){
 			Prop* temp =  (Prop*)props[j]->objectAtIndex(i);
 			temp->move(map->getSpeed());
 			if(temp->collision(hero->getSprite())){
+				if(temp->getType() == Prop::PROP){
+					hero->changeRole(rand() % 3 + 4);	
+				
+				}else{
+					GameData::addScore(temp->getScore());
+				}
 				temp->setCollision(this);
 			}
 		}
@@ -174,7 +185,13 @@ void GameScene::bgMove(float dt){
 		if(++propIndex > 1){
 			propIndex = 0;
 		}
-		initProps(854);
+
+		if(map->getPercent() > 0.7){
+			initProps(2200);
+		}else{
+			initProps(854);
+		}
+
 	}
 
 	if(hero->getState() != Role::ATTACK){
@@ -208,12 +225,17 @@ void GameScene::bgMove(float dt){
 
 	if(hero->isDie()){
 		gameOver();
+	}else if(strcmp(hero->getChange(), "") != 0){  //变身状态
+		totalTime += dt;
+		if(totalTime > 8){
+			hero->resumeNormal();
+			totalTime = 0;
+		}
 	}
 
 	if(items->getPositionX() > -items->getContentSize().width){
 		items->setPositionX(items->getPositionX() - getSpeed() / 2);
 	}else{
-		srand(time(0));
 		if(rand() % 10 == 5){
 			items->setPositionX(854);
 		}
@@ -368,21 +390,27 @@ void GameScene::initBgItems(int level){
 }
 
 void GameScene::initProps(float xPos){
+	int randProp;
+	if(strcmp(hero->getChange(),"") == 0 ){
+		randProp = 2;
+	}else{
+		randProp = 0;
+	}
 
 	int p1[][10] = {
 	{0,0,0,1,1,1,1,0,0,0},
 	{0,0,1,0,0,0,0,1,0,0},
 	{0,1,0,0,0,0,0,0,1,0},
-	{1,0,0,0,0,0,0,0,0,1}};
+	{1,0,0,0,randProp,0,0,0,0,1}};
 
 	int p2[][10] = { 
 	{0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,2,0,0,0,0,0},
+	{0,0,0,0,randProp,0,0,0,0,0},
 	{0,0,0,0,0,0,0,0,0,0},
 	{1,1,1,1,1,1,1,1,1,1}};
 
-	int p3[][10] = {{1,0,0,0,0,0,1,0,0,0},
-	{0,1,0,0,0,1,0,1,0,2},
+	int p3[][10] = {{1,0,0,randProp,0,0,1,0,0,0},
+	{0,1,0,0,0,1,0,1,0,0},
 	{0,0,1,0,1,0,0,0,1,0},
 	{0,0,0,1,0,0,0,0,0,1}};
 

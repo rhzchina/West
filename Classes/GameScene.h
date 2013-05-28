@@ -52,6 +52,8 @@ private:
 	CCLabelAtlas* bestValue;
 	CCArray*  props[2];	
 	int propIndex;
+	float totalTime;
+	bool count;
 	
 };
 #endif
