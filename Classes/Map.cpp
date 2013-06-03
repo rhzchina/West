@@ -209,7 +209,7 @@ void Map::mapMove(GameScene* parent,Role* role){
 		CCSprite* m = (CCSprite*)map->objectAtIndex(i);
 
 		if(i == 0){ //第二大关卡开始，结束玩家飞行状态
-			if(role->isProtected() && role->getState() == Role::FLY){
+			if(role->getState() == Role::FLY){
 				if(m->getPositionX() > 0 && m->getTag() < 7 && m->getPositionX() <= Role::POSX){
 					role->nextLevel();
 					speed += 0.5;  //每一关增加0.5速 度

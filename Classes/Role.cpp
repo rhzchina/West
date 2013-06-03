@@ -27,6 +27,7 @@ Role::Role(CCLayer* parent)
 	state = 0;
 	protecting = false;
 	die = false;
+	blink = false;
 	
 	effect = CCSprite::createWithSpriteFrameName("earth1.png");
 	effect->setPosition(ccp(POSX,POSY - hero->getContentSize().height / 2));
@@ -110,6 +111,12 @@ void Role::midCallback(){
 	if(state == ATTACK){
 		resetWeapon();
 	}
+	
+}
+
+void Role::protectedEnd(){
+	protecting = false;
+	blink = false;
 }
 
 //当武器射出状态有效，改变状态
@@ -160,9 +167,22 @@ void Role::fly(bool over){
 	}
 }
 
+bool Role::isDie(){
+	if(effect != NULL && strcmp(change,"6/") == 0){
+		SETANCHPOS(effect,hero->getPositionX(),hero->getPositionY(), 0.5,0.5);	
+	}
+	return die;	
+}
 void Role::resumeNormal(){
+	int blink = strcmp(change, "6/");
 	change = "";
 	changeState(state, true);
+	if(blink == 0 ){
+		this->blink = true;
+		hero->runAction(CCSequence::create(CCBlink::create(1,10),CCCallFunc::create(this,callfunc_selector(Role::protectedEnd)),NULL));
+	}else{
+		protecting = false;
+	}
 }
 
 void Role::changeRole(int index){
@@ -199,6 +219,7 @@ void Role::changeRole(int index){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("hero6.plist", "hero6.png");	
 		}
 		change = "6/";
+		protecting = true;
 	break;
 	}
 	changeState(state,true);
@@ -213,7 +234,9 @@ void Role::changeState(int s, bool first){
 		if(first){
 			hero->stopActionByTag(999);
 		}else{
-			hero->stopAllActions();
+			if(!blink){
+				hero->stopAllActions();
+			}
 		}
 			
 		if(effect->isVisible()){		
@@ -221,15 +244,27 @@ void Role::changeState(int s, bool first){
 			effect->setVisible(false);
 		}
 	int count = 0;
-	string name(change); 
+	string name(change);
+
 	switch(state){
 	case NORMAL:
-		count = 5;
-		name.append("run_");
+		if(strcmp(change, "4/") == 0){
+			count = 4;
+			name.append("speedup_");
+		}else{
+			count = 5;
+			name.append("run_");
+		}
 		hero->setPositionY(130);
-		effect->runAction(CCRepeatForever::create(createAni("heart",3,0.1f)));
-		effect->setVisible(true);
-		effect->setPosition(ccp(hero->getPositionX() - 20,hero->getPositionY()));
+		if(strcmp(change,"6/") != 0 && strcmp(change,"4/") != 0 ){
+			effect->runAction(CCRepeatForever::create(createAni("heart",3,0.1f)));
+			effect->setVisible(true);
+			effect->setPosition(ccp(hero->getPositionX() - 20,hero->getPositionY()));
+		}else if(strcmp(change, "4/") == 0){
+			effect->runAction(CCRepeatForever::create(createAni("speed",3,0.1f)));
+			effect->setPosition(hero->getPosition());
+			effect->setVisible(true);
+		}
 		break;
 	case SPEEDUP:
 		count = 4;
@@ -254,6 +289,12 @@ void Role::changeState(int s, bool first){
 	CCRepeatForever* repeat = CCRepeatForever::create(createAni(name.c_str(),count,0.1f,false));
 	repeat->setTag(999);
 	hero->runAction(repeat);
+
+	if(strcmp(change,"6/") == 0 ){
+		effect->runAction(CCRepeatForever::create(createAni("gold_circle",3,0.1f)));
+		effect->setVisible(true);
+		effect->setPosition(ccp(hero->getPositionX(),hero->getPositionY()));
+	}
 }
 
 CCRect Role::getWeaponRange(){

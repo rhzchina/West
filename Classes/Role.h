@@ -30,6 +30,7 @@ public:
 	void swing();
 	void actionCallback();
 	void midCallback();
+	void protectedEnd();
 	void fall();
 	void fly(bool);
 	void resetWeapon();
@@ -38,11 +39,12 @@ public:
 	void setProtect(bool);
 	bool isProtected(){return protecting;}
 	void nextLevel();
-	bool isDie(){return die;}
+	bool isDie();
 	void changeRole(int);     // 角色变身
 	char* getChange(){return change;}
 private:
 	bool protecting;   //无敌状态
+	bool blink;       //无敌过渡
 	int state;
 	char* change;          //变身状态
 	bool checkOnLand;

@@ -166,7 +166,12 @@ void GameScene::bgMove(float dt){
 			temp->move(map->getSpeed());
 			if(temp->collision(hero->getSprite())){
 				if(temp->getType() == Prop::PROP){
-					hero->changeRole(rand() % 3 + 4);	
+					int index = rand() % 3 + 4;
+					if(index == 4){
+						map->tempChange(SPEEDUP);
+						tempChange(SPEEDUP);
+					}
+					hero->changeRole(index);	
 				
 				}else{
 					GameData::addScore(temp->getScore());
@@ -195,8 +200,8 @@ void GameScene::bgMove(float dt){
 	}
 
 	if(hero->getState() != Role::ATTACK){
-		map->clearChange();
-		clearChange();
+	/*	map->clearChange();
+		clearChange();*/
 		if(hero->getSprite()->getPositionY() < 130){
 			if(map->onLand(hero->getSprite())){
 				if(hero->getState() != Role::FALL && hero->getState() != Role::ATTACK){
@@ -205,17 +210,23 @@ void GameScene::bgMove(float dt){
 					hero->hold();
 				}
 			}else{
-				if(hero->getState() != Role::ATTACK && hero->getState() != Role::HOLD)
+				if(!hero->isProtected() && hero->getState() != Role::ATTACK && hero->getState() != Role::HOLD){
+
 					hero->fall();
+				}else if(hero->isProtected()){
+					hero->changeState(Role::NORMAL);
+				}
 			}
 		}else if(hero->getSprite()->getPositionY() == 130){
-			if(!map->onLand(hero->getSprite())) {
+			if(!map->onLand(hero->getSprite()) && !hero->isProtected()) {
 				hero->fall();
+			}else if(hero->getState() == Role::FALL && hero->isProtected()){
+				hero->changeState(Role::NORMAL);
 			}
 		}
 	}else{
-		map->tempChange(SPEEDUP);
-		tempChange(SPEEDUP);
+	/*	map->tempChange(SPEEDUP);
+		tempChange(SPEEDUP);*/
 	}
 
 	//ÎäÆ÷ÊÇ·ñ·ñÊ¹ÓÃ
@@ -230,6 +241,8 @@ void GameScene::bgMove(float dt){
 		if(totalTime > 8){
 			hero->resumeNormal();
 			totalTime = 0;
+			map->clearChange();
+			clearChange();
 		}
 	}
 
