@@ -79,7 +79,7 @@ void Role::hold(){
 		//float time = height / 200.0f; 
 		float time = POINT_INSTANCE(ccp(POSX,POSY),ccp(hero->getPositionX(),hero->getPositionY())) / 430.0f;
 		hero->runAction(CCSequence::create(
-			CCJumpTo::create(time < 0.5 ? 0.5 : time,ccp(POSX,0),height,1),
+			CCJumpTo::create(time < 0.5 ? 0.5 : time,ccp(POSX, 0),height,1),
 			CCCallFunc::create(this,callfunc_selector(Role::actionCallback))
 			,NULL));
 	}

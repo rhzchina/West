@@ -10,7 +10,7 @@ GameScene::GameScene(void)
 	totalTime = 0;
 	count = false;
 	bgX = 0;
-	speed = 0.5;
+	speed = 2;
 	speedChange = 0;
 	map = NULL;
 	hero = NULL;
@@ -170,6 +170,9 @@ void GameScene::bgMove(float dt){
 					if(index == 4){
 						map->tempChange(SPEEDUP);
 						tempChange(SPEEDUP);
+					}else if(index == 5){
+						map->tempChange(-SPEEDUP / 2.0f);
+						tempChange(-SPEEDUP / 2.0f);
 					}
 					hero->changeRole(index);	
 				
