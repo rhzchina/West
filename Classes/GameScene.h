@@ -27,7 +27,7 @@ public:
 	float getSpeed(){return speed + speedChange;}
 	void gameOver();
 	void setProgress(float percent){progressLeaf->setPositionX(progressBg->getPositionX() + percent *  progressBg->getContentSize().width) ;}
-
+	void tempCallback(CCNode*);
 	void initProps(float xPos);
 
 	static CCScene* scene();
@@ -54,6 +54,8 @@ private:
 	int propIndex;
 	float totalTime;
 	bool count;
+	bool over;
+	int changeIndex;
 	
 };
 #endif

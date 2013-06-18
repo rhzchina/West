@@ -9,8 +9,10 @@ GameScene::GameScene(void)
 	scrollBg = NULL;
 	totalTime = 0;
 	count = false;
+	over = false;
 	bgX = 0;
 	speed = 2;
+	changeIndex = 0;
 	speedChange = 0;
 	map = NULL;
 	hero = NULL;
@@ -141,8 +143,23 @@ void GameScene::ccTouchesEnded(CCSet* touches,CCEvent* event){
 	}*/
 }
 
+void GameScene::tempCallback(CCNode* node){
+	removeChild(node, true);
+	hero->changeRole(changeIndex);
+	if(changeIndex == 4){
+		map->tempChange(SPEEDUP);
+		tempChange(SPEEDUP);
+	}else if(changeIndex == 5){
+		map->tempChange(-SPEEDUP / 2.0f);
+		tempChange(-SPEEDUP / 2.0f);
+	}
+}
+
 void GameScene::bgMove(float dt){
 	//游戏数据存储，根据移动的速度计算得分和距离
+	if(over){
+		return;
+	}
 
 	srand(time(0));
 	GameData::addLoop();
@@ -166,16 +183,13 @@ void GameScene::bgMove(float dt){
 			temp->move(map->getSpeed());
 			if(temp->collision(hero->getSprite())){
 				if(temp->getType() == Prop::PROP){
-					int index = rand() % 3 + 4;
-					if(index == 4){
-						map->tempChange(SPEEDUP);
-						tempChange(SPEEDUP);
-					}else if(index == 5){
-						map->tempChange(-SPEEDUP / 2.0f);
-						tempChange(-SPEEDUP / 2.0f);
-					}
-					hero->changeRole(index);	
-				
+					changeIndex = rand() % 3 + 4;
+					hero->hideSprite();
+					CCSprite* temp = CCSprite::create();
+					SETANCHPOS(temp, hero->getSprite()->getPositionX(),hero->getSprite()->getPositionY(),0.5,0.5);
+					addChild(temp,20);
+					temp->runAction(CCSequence::create(createAni("change",5,0.05f),CCCallFuncN::create(this,callfuncN_selector(GameScene::tempCallback)),NULL));
+
 				}else{
 					GameData::addScore(temp->getScore());
 				}
@@ -203,8 +217,9 @@ void GameScene::bgMove(float dt){
 	}
 
 	if(hero->getState() != Role::ATTACK){
-	/*	map->clearChange();
+		/*	map->clearChange();
 		clearChange();*/
+
 		if(hero->getSprite()->getPositionY() < 130){
 			if(map->onLand(hero->getSprite())){
 				if(hero->getState() != Role::FALL && hero->getState() != Role::ATTACK){
@@ -228,7 +243,7 @@ void GameScene::bgMove(float dt){
 			}
 		}
 	}else{
-	/*	map->tempChange(SPEEDUP);
+		/*	map->tempChange(SPEEDUP);
 		tempChange(SPEEDUP);*/
 	}
 
@@ -238,7 +253,11 @@ void GameScene::bgMove(float dt){
 	}
 
 	if(hero->isDie()){
-		gameOver();
+		over = true;	
+		hero->setDie(this);
+		CCSprite* temp = hero->getSprite();
+		temp->runAction(CCSequence::create(CCJumpTo::create(0.8, ccp(temp->getPositionX(),-200),300,1),CCCallFunc::create(this, callfunc_selector(GameScene::gameOver)),NULL));
+		//gameOver();
 	}else if(strcmp(hero->getChange(), "") != 0){  //变身状态
 		totalTime += dt;
 		if(totalTime > 8){
@@ -277,12 +296,12 @@ void GameScene::initBgItems(int level){
 		temp = CCSprite::create(name.append("rainbow.png").c_str());
 		SETANCHPOS(temp,200, 200, 0.5, 0);
 		items->addChild(temp);
-		
+
 		name.replace(name.begin(),name.end(),dir);
 		temp = CCSprite::create(name.append("small_hill.png").c_str());
 		SETANCHPOS(temp,300, 0, 0.5, 0);
 		items->addChild(temp);
-		
+
 		name.replace(name.begin(),name.end(),dir);
 		temp = CCSprite::create(name.append("hill.png").c_str());
 		SETANCHPOS(temp,600, 0, 0.5, 0);
@@ -295,7 +314,7 @@ void GameScene::initBgItems(int level){
 			items->addChild(temp);
 			x += temp->getContentSize().width;
 		}
-		
+
 
 		break;
 	case 2:
@@ -312,12 +331,12 @@ void GameScene::initBgItems(int level){
 		temp = CCSprite::create(name.append("hill1.png").c_str());
 		SETANCHPOS(temp,300, 0, 0.5, 0);
 		items->addChild(temp);
-		
+
 		name.replace(name.begin(),name.end(),dir);
 		temp = CCSprite::create(name.append("hill2.png").c_str());
 		SETANCHPOS(temp,600, 0, 0.5, 0);
 		items->addChild(temp);
-		
+
 		name.replace(name.begin(),name.end(),dir);
 		temp = CCSprite::create(name.append("water.png").c_str());
 		SETANCHPOS(temp,500, 0, 0.5, 0);
@@ -414,62 +433,62 @@ void GameScene::initProps(float xPos){
 	}
 
 	int p1[][10] = {
-	{0,0,0,1,1,1,1,0,0,0},
-	{0,0,1,0,0,0,0,1,0,0},
-	{0,1,0,0,0,0,0,0,1,0},
-	{1,0,0,0,randProp,0,0,0,0,1}};
+		{0,0,0,1,1,1,1,0,0,0},
+		{0,0,1,0,0,0,0,1,0,0},
+		{0,1,0,0,0,0,0,0,1,0},
+		{1,0,0,0,randProp,0,0,0,0,1}};
 
-	int p2[][10] = { 
-	{0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,randProp,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0},
-	{1,1,1,1,1,1,1,1,1,1}};
+		int p2[][10] = { 
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,randProp,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{1,1,1,1,1,1,1,1,1,1}};
 
-	int p3[][10] = {{1,0,0,randProp,0,0,1,0,0,0},
-	{0,1,0,0,0,1,0,1,0,0},
-	{0,0,1,0,1,0,0,0,1,0},
-	{0,0,0,1,0,0,0,0,0,1}};
+			int p3[][10] = {{1,0,0,randProp,0,0,1,0,0,0},
+			{0,1,0,0,0,1,0,1,0,0},
+			{0,0,1,0,1,0,0,0,1,0},
+			{0,0,0,1,0,0,0,0,0,1}};
 
-	int **p = new int*[4];
-	for(int i = 0;i < 4; i++){
-		p[i] = new int[10];
-	}
-
-	switch(rand() % 3){
-	case 0:
-		for(int i = 0;i < 4;i++){
-			for(int j = 0;j < 10; j++){
-				p[i][j] = p1[i][j];
+			int **p = new int*[4];
+			for(int i = 0;i < 4; i++){
+				p[i] = new int[10];
 			}
-		}	
-		break;
-	case 1:
-		for(int i = 0;i < 4;i++){
-			for(int j = 0;j < 10; j++){
-				p[i][j] = p2[i][j];
-			}
-		}	
-		break;
-	case 2:
-		for(int i = 0;i < 4;i++){
-			for(int j = 0;j < 10; j++){
-				p[i][j] = p3[i][j];
-			}
-		}
-		break;
-	}
 
-	float x = xPos, y = 300;
-	for(int i = 0;i < 4; i++){
-		for(int j = 0; j < 10; j++){
-			if(p[i][j] != 0){
-				props[propIndex]->addObject(new Prop(p[i][j],this,x,y));	
+			switch(rand() % 3){
+			case 0:
+				for(int i = 0;i < 4;i++){
+					for(int j = 0;j < 10; j++){
+						p[i][j] = p1[i][j];
+					}
+				}	
+				break;
+			case 1:
+				for(int i = 0;i < 4;i++){
+					for(int j = 0;j < 10; j++){
+						p[i][j] = p2[i][j];
+					}
+				}	
+				break;
+			case 2:
+				for(int i = 0;i < 4;i++){
+					for(int j = 0;j < 10; j++){
+						p[i][j] = p3[i][j];
+					}
+				}
+				break;
 			}
-			x += 60;
-		}
-		x = xPos;
-		y -= 50;
-	} 
+
+			float x = xPos, y = 300;
+			for(int i = 0;i < 4; i++){
+				for(int j = 0; j < 10; j++){
+					if(p[i][j] != 0){
+						props[propIndex]->addObject(new Prop(p[i][j],this,x,y));	
+					}
+					x += 60;
+				}
+				x = xPos;
+				y -= 50;
+			} 
 }
 
 void GameScene::btnCallback(CCObject* sender){

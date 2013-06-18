@@ -42,6 +42,8 @@ public:
 	bool isDie();
 	void changeRole(int);     // 角色变身
 	char* getChange(){return change;}
+	void setDie(CCLayer*);
+	void hideSprite(){hero->setVisible(false);}
 private:
 	bool protecting;   //无敌状态
 	bool blink;       //无敌过渡

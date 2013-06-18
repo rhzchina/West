@@ -14,6 +14,7 @@ Role::Role(CCLayer* parent)
 	sprintf(name,"hero%d.png",index);
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(plist,name);
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("effect.plist","effect.png");
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("change.plist", "change.png");
 
 	hero = CCSprite::createWithSpriteFrameName("run_1.png");
 	hero->setPosition(ccp(POSX,POSY));
@@ -28,7 +29,7 @@ Role::Role(CCLayer* parent)
 	protecting = false;
 	die = false;
 	blink = false;
-	
+
 	effect = CCSprite::createWithSpriteFrameName("earth1.png");
 	effect->setPosition(ccp(POSX,POSY - hero->getContentSize().height / 2));
 	parent->addChild(effect,15);
@@ -111,7 +112,7 @@ void Role::midCallback(){
 	if(state == ATTACK){
 		resetWeapon();
 	}
-	
+
 }
 
 void Role::protectedEnd(){
@@ -155,15 +156,14 @@ void Role::swing(){
 		CCCallFunc::create(this,callfunc_selector(Role::actionCallback)),NULL));
 }
 
-
 //over参数指定是否是一关结束的飞行
 void Role::fly(bool over){
 	if(state != OVER && state != FLY){
-	if(over){
-		changeState(JUMP);
-		state = OVER;
-	}
-	hero->runAction(CCSequence::create(CCJumpTo::create(1,ccp(POSX,300),100,1),CCCallFunc::create(this,callfunc_selector(Role::actionCallback)),NULL));
+		if(over){
+			changeState(JUMP);
+			state = OVER;
+		}
+		hero->runAction(CCSequence::create(CCJumpTo::create(1,ccp(POSX,300),100,1),CCCallFunc::create(this,callfunc_selector(Role::actionCallback)),NULL));
 	}
 }
 
@@ -187,62 +187,62 @@ void Role::resumeNormal(){
 
 void Role::changeRole(int index){
 	bool add = true;
+	for(int i = 0;i < 3; i++){
+		if(cur[i] == index){
+			add = false;
+			break;
+		}
+	}
+	if(add){
 		for(int i = 0;i < 3; i++){
-			if(cur[i] == index){
-				add = false;
+			if(cur[i] == 0){
+				cur[i] = index;
 				break;
 			}
 		}
-		if(add){
-			for(int i = 0;i < 3; i++){
-				if(cur[i] == 0){
-					cur[i] = index;
-					break;
-				}
-			}
-		}
+	}
 	switch(index){
 	case 4:
 		if(add){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("hero4.plist", "hero4.png");	
 		}
 		change = "4/";
-	break;
+		break;
 	case 5:	
 		if(add){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("hero5.plist", "hero5.png");	
 		}
 		change = "5/";
-	break;
+		break;
 	case 6:
 		if(add){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("hero6.plist", "hero6.png");	
 		}
 		change = "6/";
 		protecting = true;
-	break;
+		break;
 	}
 	changeState(state,true);
 }
 
 void Role::changeState(int s, bool first){
-		if(state == ATTACK){
-			resetWeapon();
-		}
-		state = s > HOLD  ? NORMAL : s;
+	if(state == ATTACK){
+		resetWeapon();
+	}
+	state = s > HOLD  ? NORMAL : s;
 
-		if(first){
-			hero->stopActionByTag(999);
-		}else{
-			if(!blink){
-				hero->stopAllActions();
-			}
+	if(first){
+		hero->stopActionByTag(999);
+	}else{
+		if(!blink){
+			hero->stopAllActions();
 		}
-			
-		if(effect->isVisible()){		
-			effect->stopAllActions();
-			effect->setVisible(false);
-		}
+	}
+
+	if(effect->isVisible()){		
+		effect->stopAllActions();
+		effect->setVisible(false);
+	}
 	int count = 0;
 	string name(change);
 
@@ -256,14 +256,18 @@ void Role::changeState(int s, bool first){
 			name.append("run_");
 		}
 		hero->setPositionY(130);
-		if(strcmp(change,"6/") != 0 && strcmp(change,"4/") != 0 ){
-			effect->runAction(CCRepeatForever::create(createAni("heart",3,0.1f)));
-			effect->setVisible(true);
-			effect->setPosition(ccp(hero->getPositionX() - 20,hero->getPositionY()));
-		}else if(strcmp(change, "4/") == 0){
+		if(strcmp(change, "4/") == 0){
 			effect->runAction(CCRepeatForever::create(createAni("speed",3,0.1f)));
 			effect->setPosition(hero->getPosition());
 			effect->setVisible(true);
+		}else if(strcmp(change, "5/") == 0){
+			effect->runAction(CCRepeatForever::create(createAni("heart",3,0.1f)));
+			effect->setPosition(ccp(hero->getPositionX() - 20,hero->getPositionY()));
+			effect->setVisible(true);
+		}else if(strcmp(change,"6/") != 0 && strcmp(change,"4/") != 0 ){
+			effect->runAction(CCRepeatForever::create(createAni("earth",3,0.1f)));
+			effect->setVisible(true);
+			effect->setPosition(ccp(hero->getPositionX() - 15,hero->getPositionY() - 35));
 		}
 		break;
 	case SPEEDUP:
@@ -288,6 +292,7 @@ void Role::changeState(int s, bool first){
 	}
 	CCRepeatForever* repeat = CCRepeatForever::create(createAni(name.c_str(),count,0.1f,false));
 	repeat->setTag(999);
+	hero->setVisible(true);
 	hero->runAction(repeat);
 
 	if(strcmp(change,"6/") == 0 ){
@@ -300,4 +305,13 @@ void Role::changeState(int s, bool first){
 CCRect Role::getWeaponRange(){
 	return CCRectMake(weapon->getPositionX() + weapon->getContentSize().width / 2,weapon->getPositionY(),
 		weapon->getContentSize().width / 2,weapon->getContentSize().height / 2);
+}
+
+void Role::setDie(CCLayer* parent){
+	CCSprite* temp = CCSprite::create("die.png");
+	SETANCHPOS(temp,hero->getPositionX(), hero->getPositionY(), hero->getAnchorPoint().x, hero->getAnchorPoint().y);
+	parent->removeChild(hero, true);
+	hero = temp;
+	parent->addChild(hero,15);
+
 }

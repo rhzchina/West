@@ -7,7 +7,7 @@
 USING_NS_CC;
 USING_NS_CC_EXT;
 
-class SelectScene : public CCLayer
+class SelectScene : public CCLayer, public CCScrollViewDelegate
 {
 public:
 	const static int MAXLEVEL = 4;
@@ -22,6 +22,8 @@ public:
 	void ccTouchesMoved(CCSet*,CCEvent*);
 	void ccTouchesEnded(CCSet*,CCEvent*);
 	
+	virtual void scrollViewDidScroll(CCScrollView*);
+	virtual void scrollViewDidZoom(CCScrollView*);
 
 	int touchedLevel(CCPoint);
 	void btnCallback(CCObject*);
@@ -29,8 +31,9 @@ public:
 private:
 	CCScrollView* scroll;
 	CCArray* level;
-	CCLabelTTF* tipText;
+	CCSprite* tipText;
 	int touched;
 	float lastX;
+	int index;
 };
 #endif

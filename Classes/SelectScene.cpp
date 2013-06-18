@@ -7,11 +7,16 @@ SelectScene::SelectScene(void)
 	scroll = NULL;
 	level = NULL;
 	tipText = NULL;
+	index = 0;
 }
 
 
 SelectScene::~SelectScene(void)
 {
+	if(level){
+		level->release();
+		level = NULL;
+	}
 }
 
 bool SelectScene::init(){
@@ -36,23 +41,23 @@ bool SelectScene::init(){
 		level = CCArray::createWithCapacity(MAXLEVEL);
 		level->retain();
 		for(int i = 1;i <= MAXLEVEL;i++){
-			//閫夊叧鑳屾櫙
+			//选关背景
 			CCSprite* itemBg = CCSprite::create("choose_bg.png");
 			SETANCHPOS(itemBg,x + 930 / 2,240,0.5,0.5);
 			container->addChild(itemBg);
 
-			//閫夊叧鍚嶇О鑳屾櫙
+			//选关名称背景
 			CCSprite* nameBg = CCSprite::createWithSpriteFrameName("name_bg.png");
 			SETANCHPOS(nameBg,x + 854 / 2 - itemBg->getContentSize().width / 2,240,0.5,0.5);
 			container->addChild(nameBg);
 
 			char name[20];
-			//鍏冲崱鍚嶇О
+			//关卡名称
 			sprintf(name,"level%d_name.png",i);
 			CCSprite* levelName = CCSprite::createWithSpriteFrameName(name);
 			SETANCHPOS(levelName,x + 854 / 2 - itemBg->getContentSize().width / 2,240,0.5,0.5);
 			container->addChild(levelName);
-			
+
 
 			if(i <= GameData::getMaxLevel()){
 				sprintf(name,"level%d.png",i);
@@ -69,14 +74,17 @@ bool SelectScene::init(){
 		container->setContentSize(CCSizeMake(854 * 4,480));
 
 		scroll = CCScrollView::create();
+		scroll->setDelegate(this);
+		scroll->setBounceable(false);
+		//scroll->setBounceable(false);
+
 		CC_BREAK_IF(!scroll);
 		SETANCHPOS(scroll,0,0,0,0);
 		scroll->setViewSize(CCSizeMake(854,480));
 		scroll->setContentSize(CCSizeMake(854 * 4,480));
-
 		scroll->setContainer(container);
 		scroll->setDirection(kCCScrollViewDirectionHorizontal);
-	
+
 		addChild(scroll);
 
 
@@ -89,7 +97,7 @@ bool SelectScene::init(){
 		back->setTag(1);
 		menu->addChild(back);
 
-		//鎻忚堪鑳屾櫙
+		//描述背景
 		CCSprite* desBg = CCSprite::create("dlg_long.png");
 		SETANCHPOS(desBg,425,0,0.5,0);
 		addChild(desBg);
@@ -103,11 +111,10 @@ bool SelectScene::init(){
 		prev->setFlipX(true);
 		addChild(prev);
 
-		tipText = CCLabelTTF::create(" ","Arial",35);
+		tipText = CCSprite::createWithSpriteFrameName("level1_des.png");
+		tipText->setScale(1.3);
 		SETANCHPOS(tipText,525,60,0.5,0.5);
-		tipText->setColor(ccc3(0,0,0));
 		addChild(tipText);
-
 
 		success = true;
 	}while(0);
@@ -122,21 +129,21 @@ CCScene* SelectScene::scene(){
 
 		SelectScene* layer = SelectScene::create();
 		CC_BREAK_IF(!layer);
-		
+
 		scene->addChild(layer);
 	}while(0);
 
 	return scene;
 }
 
- void SelectScene::ccTouchesBegan(CCSet* touches,CCEvent* event){
+void SelectScene::ccTouchesBegan(CCSet* touches,CCEvent* event){
 	CCTouch* touch = (CCTouch*)touches->anyObject();
 	CCPoint location = CCDirector::sharedDirector()->convertToGL(touch->getLocationInView());
 	int num = touchedLevel(location);
 	if(num != -1){
 		touched = num;
-		lastX = location.x;
 	}
+	lastX = location.x;
 
 }
 
@@ -158,6 +165,16 @@ void SelectScene::ccTouchesEnded(CCSet* touches,CCEvent* event){
 		CCDirector::sharedDirector()->replaceScene(GameScene::scene());
 	}else{
 		touched = -1;
+
+	}
+	if(location.x > lastX){
+		if(index > 0){
+			index--;
+		}
+	}else{
+		if(index < 3){
+			index++;
+		}
 	}
 
 }
@@ -168,29 +185,29 @@ int SelectScene::touchedLevel(CCPoint pos){
 		CCSprite* t = (CCSprite*)level->objectAtIndex(i);
 		if(CCRectMake(scroll->getContentOffset().x + t->getPositionX() - t->getContentSize().width / 2,t->getPositionY() - t->getContentSize().height / 2,
 			t->getContentSize().width,t->getContentSize().height).containsPoint(pos)){
-			if(i + 1 <= GameData::getMaxLevel()){
-				num = i + 1;
-			}else{
-				int unlock = 0;
-				switch(i + 1){
-				case 2:
-					unlock = 2700;
-					break;
-				case 3:
-					unlock = 4000;
-					break;
-				case 4:
-					unlock = 5500;
-					break;
+				if(i + 1 <= GameData::getMaxLevel()){
+					num = i + 1;
+				}else{
+					int unlock = 0;
+					switch(i + 1){
+					case 2:
+						unlock = 2700;
+						break;
+					case 3:
+						unlock = 4000;
+						break;
+					case 4:
+						unlock = 5500;
+						break;
+					}
+					/*char str[100];
+					sprintf(str,conv("解锁本关需要挑战%dM,加油哦！"),unlock);
+					tipText->setString(str);*/
 				}
-				char str[100];
-				sprintf(str,conv("瑙ｉ攣鏈叧闇�瑕佹寫鎴?dM,鍔犳补鍝︼紒"),unlock);
-				tipText->setString(str);
-			}
 		}
 	}
 	return num;
-	
+
 }
 
 void SelectScene::btnCallback(CCObject* sender){
@@ -202,4 +219,25 @@ void SelectScene::btnCallback(CCObject* sender){
 	case 2:
 		break;
 	}
+}
+
+void SelectScene::scrollViewDidScroll(CCScrollView* view){
+	SETANCHPOS(scroll->getContainer(),view->getContentOffset().x,view->getContentOffset().y + 50, 0, 0);
+	if(view->isTouchMoved()){
+	}else{
+		removeChild(tipText);
+		char n[50];
+		CCLog("%d是多少",index);
+		sprintf(n, "level%d_des.png", (index + 1));
+		CCLog(n);
+		tipText = CCSprite::createWithSpriteFrameName(n);
+		tipText->setScale(1.3f);
+		SETANCHPOS(tipText,505,60,0.5,0.5);
+		addChild(tipText);
+		scroll->getContainer()->runAction(CCMoveTo::create(0.3,ccp(-index * 854, view->getContentOffset().y)));
+	}
+}
+
+void SelectScene::scrollViewDidZoom(CCScrollView* view){
+
 }
