@@ -225,7 +225,7 @@ void SelectScene::scrollViewDidScroll(CCScrollView* view){
 	SETANCHPOS(scroll->getContainer(),view->getContentOffset().x,view->getContentOffset().y + 50, 0, 0);
 	if(view->isTouchMoved()){
 	}else{
-		removeChild(tipText);
+		removeChild(tipText,true);
 		char n[50];
 		CCLog("%d «∂‡…Ÿ",index);
 		sprintf(n, "level%d_des.png", (index + 1));
