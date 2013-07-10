@@ -23,8 +23,11 @@ char* conv(const char* str){
 	}
 	return result;
 #else
-	char* r = (char*)malloc(strlen(str));
+	char* r = (char*)malloc(strlen(str) + 1);
 	memcpy(r,str,strlen(str));
+	r[strlen(str)] = '\0';
+	return r;
+
 #endif
 }
 
