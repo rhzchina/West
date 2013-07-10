@@ -10,7 +10,7 @@ Map::Map(int level,GameScene* parent)
 	createData(level);
 	initMap(1);
 	curLevel = 1;*/
-	speed = 7.0f;
+	speed = 5.5f;
 	speedChange = 0;
 	map = CCArray::create();
 	map->retain();
